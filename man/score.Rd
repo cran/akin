@@ -28,9 +28,9 @@ normalization, as well as data thesholding through the simplest form of ReLU rec
 all cases.
 }
 \details{
-Normalization (scaling) can be applied locally on subsets of \code{x} when User inputs the values in \code{...} list.
+Normalization (scaling) can be applied locally on subsets of \code{x} when User inputs the values in the \code{...} list.
 Otherwise, the scaling is global i.e. it is applied to \code{x} as a whole. No assumptions regarding the underlying distribution
-of \code{x} were made.
+of \code{x} are made.
 
 \code{how != relu}. When \code{...} is empty, the function uses the sample statistics of \code{x} e.g. the mean, range
 or standard deviation. Otherwise, it uses values inputted by User case in which, \emph{location-scale} normalization
@@ -38,15 +38,13 @@ requires \code{how = stdev} and the \code{...} list filled as follows: the \code
 value first and \code{sd(x) > 0} or any other positive value second. In particular, \emph{location} normalization works similarly
 but with the second value = 1. Other location types, e.g. x/max(x), are obtainable.
 
-NOTE: when \code{...} is populated with custom values, all other argument values must be present in call (see Examples).
+NOTE: when \code{...} is populated with custom values, all other arguments should be present and named (see Examples).
 
 \code{how = relu}. This option acts as numeric thresholding locally as well as globally. It stands for \strong{re}ctified
 \strong{l}inear \strong{u}nit and involves no statistics. It applies to numeric types that have ordering property (double,
-integer). On return, all \code{x} attributes are dropped.
-
-When \code{filter = 'positive'}, all negative values are set to zero while all other values remain unchanged. Alternatively,
-when \code{filter = 'negative'}, all negative values remain unchanged while all other values are set to zero. The "negative"
-option was added for symmetry.
+integer). On return, all \code{x} attributes are dropped. When \code{filter = 'positive'}, all negative values are set to zero
+while positive values remain unchanged. Alternatively, when \code{filter = 'negative'}, all negative values remain unchanged
+while all other values are set to zero. The "negative" option was added for symmetry.
 }
 \examples{
 

@@ -25,8 +25,8 @@ stratify(
 \item{target}{character length 1. The name of column considered to be the root stratum. For example, the name of the
 'target' categorical column in a classification training set. This argument should always have a value}
 
-\item{stratum}{character of length <= \code{ncol(data) - 1}. Default, NULL. Names of other categorical data
-columns which contribute to stratification deepening}
+\item{stratum}{character of length <= \code{ncol(data) - 1}. Default, NULL. Names of additional categorical data
+columns which deepen the stratification}
 
 \item{size}{integer length 1. Default, none. Value set by User. In this case, it is upper-bounded by the size of the
 thinnest stratum having more than one row. Setting \code{size} value above this bound requires sampling with
@@ -36,7 +36,7 @@ replacement}
 Can be set when \code{size} is missing from call. It can take as value any of the stratum thicknesses shown in the
 output message
 
-NOTE: it is recommended that \emph{both} \code{size} and \code{thresh} values be missing from call until
+NOTE: it is recommended that \emph{both} \code{size} and \code{thresh} values are missing from call until
 information on stratification becomes available after first run}
 
 \item{seed}{integer length 1. Seed value for output reproducibility}
@@ -46,7 +46,7 @@ information on stratification becomes available after first run}
 \item{dis}{symbol. Default NULL. One of the density or function \link[stats]{distributions} used for
 generating probability vectors for probabilistic sampling}
 
-\item{args}{list of arguments required by distributions as described in \link[stats]{distributions} documentation.
+\item{args}{list of arguments required by distributions as described in \link[stats:Distributions]{stats::distributions} documentation.
 Default, none. \strong{NB} The list should \emph{never} include the first argument (\strong{x} or \strong{n})
 required in documentation, as it is collected internally from each stratum
 
@@ -58,7 +58,7 @@ values in \code{args} is changed}
 and \strong{size} - the sample size extracted from each stratum. Requires \code{indx = FALSE}}
 
 \item{replace}{logical, default FALSE. When TRUE, sampling with replacement if \code{size} is present in call
-and its value is larger than the thickness of the thinnest stratum with more than one row}
+and exceeds the thinnest stratum with more than one row}
 
 \item{verbose}{logical, default TRUE, display messages}
 }
@@ -73,39 +73,38 @@ Obtains a proportional stratified sample from any data convertible to "data.tabl
 class containing categorical variables.
 }
 \details{
-This utility was designed to find a true sample representation of the data under current stratification
+This utility is designed to find a true sample representation of the data under current stratification
 by matching closely the proportionality of strata as long as argument \code{size} is missing from call.
 Each distinct combination of \code{target} and \code{stratum} levels defines a stratum. For minimal
 stratification, argument \code{target} must always have a value present in call. All one-row strata, when
 formed, are simply appended to the compounded output.
 
 \code{size}. As column in the extended output, it represents the size of the sample extracted from each
-stratum, internally derived proportional to each stratum thickness hence, unbounded by the thinnest
-stratum with more than one row. Deep stratification along with high cardinality and imbalance may severely
-restrict the size of the compounded output which is the sum of all strata sizes plus the number of one-row
-strata. The sampling occurs at stratum level except for one-row strata for which \code{size = 0} is interpreted
-as "no sampling".
+stratum, internally derived to be proportional to stratum thickness, unbounded by the thinnest stratum with more
+than one row. Deep stratification along with high cardinality and imbalance may severely restrict the size of the
+compounded output which is the sum of all stratum sizes plus the number of one-row strata. The sampling occurs at
+stratum level except for one-row strata for which \code{size = 0} is interpreted as "no sampling".
 
-As function argument, it is interpreted as the largest sample size without replacement that can be requested,
+As function argument, \code{size} is interpreted as the largest sample size without replacement that can be requested,
 being bounded by the thinnest stratum with more than one row. The presence of \code{size} in call alters
-the proportionality since each stratum - except one-row strata - contributes equally to the output size, equal
-to the number of strata times the \code{size} value plus the number of one-row strata.
+the proportionality since each stratum - except one-row strata - contributes equally to the output size which is
+the number of strata times the \code{size} value plus the number of one-row strata.
 
 \code{thresh}. Automatic switch that modifies stratum sample size calculation method based on the extreme stratum
 thickness values, stratification depth and total data rows. Internally, it searches for the formula that finds
 at least one sample size accommodating the thinnest stratum with more than one row. Messages are displayed at runtime
-although, in most cases the formula is found at first iteration. When \code{thresh >= nrow(data)}, each stratum is sampled
-proportional with the ratio between thinnest and thickest strata, which may lead to a relatively small size output.
-All other \code{thresh} values compromise slightly between output size and proportionality (see Example 3).
+although, in most cases the condition is satisfyed at first iteration. When \code{thresh >= nrow(data)}, each stratum
+is sampled proportional with the ratio between thinnest and thickest strata, which may lead to a relatively small size
+output. All other \code{thresh} values compromise slightly between output size and proportionality (see Example 3).
 \subsection{Probabilistic Sampling}{
 
 \code{dis}. The \code{prob} argument in \link[base:sample]{base::sample} cannot be used as required since the length of probability vector
-varies with stratum thickness. Herein, strata probability vectors are determined by the distribution specified in
+varies with stratum thickness. Herein, stratum probability vectors are determined by the distribution specified in
 argument \code{dis} which associates each stratum with a probability vector of thickness length. When \code{args} is
 missing from call, \code{dis} uses the default argument values for respective distribution. An error is thrown when the
 probability vector has insufficient number of non-zero values. See package \strong{stats}, "Distributions" documentation.
 
-NOTE: Random variate generators i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of absolute
+NOTE: The random variate generators i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of absolute
 \emph{random deviate} values which play the role of pseudo-probabilities conformant with the requirements listed in
 \link[base:sample]{base::sample} documentation.
 }

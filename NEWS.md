@@ -18,6 +18,10 @@
 
 * Resubmission
 
-Added function 'common' which identifies common substrings inside two strings
+Added function 'common' which identifies common substrings inside a pair of chains
 
+# akin 0.2.0
+
+* Bugfix: Removed delayed assignment which would prevent spanning the entire from-to window in function "common"
+* Clarified some statements in the "Manual"
 

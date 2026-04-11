@@ -4,8 +4,8 @@
 #'
 #' @param readpath character, length 1. Path to source data that is readable with [data.table::fread]
 #' @param rows integer length 1. Number of rows in each data subset. Internally, it determines the total
-#'   number of subsets before the subsets are vertically split
-#' @param splits integer, length 1. Number of vertical data splits in each subset. Recommended for
+#'   number of subsets before the vertical split
+#' @param splits integer, length 1. Number of vertical data splits in each subset, see [splitV]. Recommended for
 #'   very wide data frames. When \code{splits = 0}, no vertical splitting occurs
 #' @param omc character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, "dgCMatrix". Other option:
 #' "matrix"
@@ -151,8 +151,8 @@
 
 tileHot = function(readpath, rows, splits, omc = 'dgCMatrix', ...) {
                     encode = as.symbol('encode')
-                  readpath = if (file.exists(readpath)) {normalizePath(readpath)}
-                             else {stop('no file at source location!', call. = FALSE)}
+                  readpath = if (file.exists(readpath)) {normalizePath(readpath)
+                             } else {stop('no file at source location!', call. = FALSE)}
                   delayedAssign('rn.x', 1:n.x )
                       info = match.fun(info, descend = FALSE)
                       ptot = r_bg(function(info, readpath) {

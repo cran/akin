@@ -28,8 +28,8 @@ or not) found at the same site are listed as many times as they appear at that s
 with no other information. Empty strings are listed as such with a warning.
 }
 \description{
-Finds and tabulates amino acid sites and extracts respective modifications or monoisotopic masses
-from a modified peptide.
+Finds and tabulates amino acid modification sites and extracts modifications or monoisotopic masses
+from modified peptide data representation.
 }
 \details{
 Although capable of handling most situations, it is recommended that the \code{wrap}ping bracket type

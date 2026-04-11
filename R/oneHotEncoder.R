@@ -6,14 +6,15 @@
 #' @param x a (named) vector or list for encoding. Missing data are removed. For decoding, a dense or sparse
 #'   matrix (preferably, the result of encoding) representing a single source data column
 #' @param type symbol. Choices: \strong{encode} - one-hot encoding, \strong{decode} - revert to original
-#' @param omc character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, "dgCMatrix"
+#' @param omc character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, 'dgCMatrix', other
+#'   option, 'matrix'
 #' @param verbose logical, default TRUE, display messages
 #'
 #' @details This utility one-hot encodes when \code{type = encode} and verifies the encoded result (or any
 #' matrix of encodings obtained with [getEV] extractor) when \code{type = decode}. It detects illicit states.
 #'
-#' @returns Encoding returns a matrix of \code{length(x)} rows and \code{length(unique(x))} columns or a warning. Decoding
-#' returns a (named) vector or an "illicit states" warning. List vectors are returned unlisted. Integer(ish) vectors,
+#' @returns Encoding returns a matrix of \code{length(x)} rows and \code{length(unique(x))} columns or a warning.
+#' Decoding returns a (named) vector or a warning. List vectors are returned unlisted. Integer(ish) vectors,
 #' converted to integer, character vectors - to factor, double or logical vector types remain unchanged.
 #'
 #'@keywords conversion
@@ -80,20 +81,19 @@ oneHot = function(x, type, omc = 'dgCMatrix', verbose = TRUE) {
                        delayedAssign('sumsetc', sum(m) == n.x && all(rowSums(m) == 1L))
                       if (anyNA(x) && verbose) cat('\nall missing values were removed!\n')
                         x = if (is.list(x)) unlist(x)[!is.na(x)] else x[!is.na(x)]
-                      if(length(x) == 0L && verbose) cat('\nno remaining values in input!!\n\n')
-                    else if (is.double(x) && verbose) {cat('encoding type \"double\"!...\n')
+                      if(length(x) == 0L && verbose) {cat('\nno remaining values in input!!\n\n')
+                    } else if (is.double(x) && verbose) {cat('encoding type \"double\"!...\n')
                     } else if(verbose) {cat('encoding type \"integer(ish)\"...\r')}
                      rn.x = names(x)
                         x = fdroplevels(if (is.factor(x)) x else as.factor(x))
                       n.x = length(x); ll = levels(x); n.l = length(ll)
                         m = eval(M)
                      for (i in 1:n.l) m[, i] = fmatch(x, ll[i], 0L, NULL)
-                     if (isTRUE(sumsetc)) return(as(m, omc))
-                     else warning('ambiguous encoding!\n', call. = FALSE)
+                     if (isTRUE(sumsetc)) return(as(m, omc)) else warning('ambiguous encoding!\n', call. = FALSE)
                 }}
                    , decode = {
-                    if (is.null(dim(x))) stop('data must have at least 2 columns', call. = FALSE)
-                    else {
+                    if (is.null(dim(x))) {stop('data must have at least 2 columns', call. = FALSE)
+                    } else {
                      delayedAssign('sms', rowSums(x) != 1L)
                      delayedAssign('any0len', any(sapply(out, length) == 0L))
                      delayedAssign('nolenout', length(out) != nrow(x))
@@ -101,8 +101,8 @@ oneHot = function(x, type, omc = 'dgCMatrix', verbose = TRUE) {
                     rn.x = dimnames(x)[[1L]]
                      n.x = dimnames(x)[[2L]]
                        g = match.fun(g, descend = FALSE)
-                  if (eval(tof) && verbose) cat('decoding type \"double\"...\n')
-                  else if (verbose) (cat('decoding type \"integer(ish)\"...\r'))
+                  if (eval(tof) && verbose) {cat('decoding type \"double\"...\n')
+                  } else if (verbose) (cat('decoding type \"integer(ish)\"...\r'))
                      out = apply(x, 1L, g, n.x, simplify = TRUE)
                      out = structure(type.convert(out, as.is = FALSE, numerals = 'no.loss'), names = rn.x)
                      if (nolenout || any0len && verbose) cat('ambiguous decoding!\n')

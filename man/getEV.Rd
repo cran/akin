@@ -2,20 +2,20 @@
 % Please edit documentation in R/getEncodedVar.R
 \name{getEV}
 \alias{getEV}
-\title{Extracts Encoded Variable From Encoded Split Or Tiled Data}
+\title{Extract Encoded Variables From Encoded Split Or Tiled Data}
 \usage{
 getEV(en, name, ...)
 }
 \arguments{
 \item{en}{a (named) list, or \link[listenv]{listenv} of matrices or a single matrix, all containing multiple
-encoded variables}
+encoded variables. See \link{oneHot} decoder for lists and matrices containing single encoded variables}
 
 \item{name}{character, length 1. Column name as found in source data}
 
 \item{...}{default, empty. Used to convert the class of extracted matrix to 'dgCMatrix' or 'matrix'}
 }
 \value{
-A dense or sparse matrix of single encoded variable which can be decoded with \link{oneHot} decoder.
+A dense or sparse matrix of single encoded variable which can be decoded with the \link{oneHot} decoder.
 }
 \description{
 Extracts a single encoded variable from a \link[base]{list} or \link[listenv]{listenv}
@@ -25,20 +25,19 @@ of encoded matrices containing multiple encoded variables
 This function includes code from package "Matrix.utils" v 0.9.8, published under GPL-3
 license, currently removed from CRAN. With thanks to the package Author!
 
-NOTE 1: If a source data column name appears inside other column names, the extracted matrix will
-combine all encoded matrices having this common name inside their column names. Although the extracted matrix
-is a proper matrix of encodings, it no longer represents \emph{a single} encoded data column. As result,
-upon decoding, \link{oneHot} decoder will report ambiguous decoding.
+NOTE 1: If \code{name} is a source data column name that appears inside other column names, the extracted matrix
+will combine all encoded matrices having this name inside their column names. Although the extracted matrix is a
+proper matrix of encodings, it no longer represents \emph{a single} encoded data column. As result, upon decoding,
+the \link{oneHot} decoder will report ambiguous decoding.
 
-NOTE 2: a warning reading either \emph{"single-column encoded matrix for ..."} or \emph{"number
-of columns of result is not a multiple of vector length (arg 2) ..."} may appear when extracting
-an encoded categorical variable from a list of encoded matrices. Most likely, this happens with low
-cardinality encoded variables. The warning signals that most encoded matrices associated with respective
-variable contain subsets of only one category (level) when, ideally, most of these matrices should
-contain a mixture of two or more categories or levels; thus, allowing matrix row-binding by category's
-label. One or more of these suggestions will solve the issue: a) shuffle data before encoding, b) increase
-number of \code{rows} in data chunks when encoding, c) if memory allows, opt for \link{tileHot} single matrix
-output encoding, as shown in Example 2.1, solution c.
+NOTE 2: a warning reading either \emph{"single-column encoded matrix for ..."} or \emph{"number of columns of
+result is not a multiple of vector length (arg 2) ..."} may appear when extracting an encoded categorical variable
+from a list of encoded matrices. Most likely, this happens with low cardinality encoded variables. The warning
+signals that most encoded matrices associated with respective variable contain subsets of only one category (level)
+when, ideally, most of these matrices should contain a mixture of two or more categories or levels; thus, allowing
+matrix row-binding by category's label. One or more of the following suggestions will solve the issue: a) shuffle
+the data before encoding, b) increase the number of \code{rows} in data chunks when encoding, c) if memory allows,
+opt for \link{tileHot} encoding single matrix output, as shown in Example 2.1, solution c.
 }
 \examples{
 

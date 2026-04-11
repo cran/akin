@@ -14,7 +14,7 @@ tileData(readpath, writepath = NULL, rows, splits, ...)
 \item{rows}{integer length 1. Number of rows in each subset. Internally, it determines the total
 number of subsets before the vertical split}
 
-\item{splits}{integer, length 1. Number of vertical data splits in each above subset}
+\item{splits}{integer, length 1. Number of vertical data splits in each above subset. See \link{splitV}}
 
 \item{...}{extra arguments to \link{splitH} e.g. \code{dropcols} for columns dropped from source data}
 }

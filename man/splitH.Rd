@@ -2,7 +2,7 @@
 % Please edit documentation in R/seqRead.R
 \name{splitH}
 \alias{splitH}
-\title{Read Subsets Of Data Files From Disk}
+\title{Read Or Write Subsets Of Data Files From Or To Disk}
 \usage{
 splitH(readpath, writepath = NULL)
 }
@@ -16,12 +16,11 @@ At stage 1, displayed information and a function. At stage 2, a "data.table" cla
 or a printout of said subset when written on disk.
 }
 \description{
-Reads and/or writes disjoint subsets from data files on disk.
-This is a two-stage function (see Examples).
+Reads or writes data files from/to disk in disjoint subsets. This is a two-stage function (see Examples).
 }
 \details{
-Arguments above apply to Stage 1 only. The arguments for Stage 2 function, which is the result of
-Stage 1, are as follows:
+Above arguments apply to Stage 1 only. The arguments for Stage 2 function, which is the output of Stage 1,
+are the following:
 
 \code{rows} integer, length 1. Number of rows per subset. When rows = Inf, the data can be either
 copied \emph{as is} or moved to a new location
@@ -30,7 +29,7 @@ copied \emph{as is} or moved to a new location
 from first to current
 
 \code{dropcols} character of \code{length < ncol(data)}. Columns to drop. Works only when \code{rows} is
-finite. Replaces argument \code{select} of \link[data.table:fread]{data.table::fread}
+finite. Replaces argument \code{select} from \link[data.table:fread]{data.table::fread}
 
 \code{how} symbol. Works only when \code{rows = Inf} and \code{writepath} location is given.
 Options: \code{how = scp}, data file is copied \emph{as is} to \code{writepath} location;
@@ -59,7 +58,7 @@ During writing, if (\code{print = TRUE}) the displayed subsets are just printout
 \code{writepath = NULL}, displayed subsets are objects.
 }
 
-There is a functional difference between \code{rows = Inf} and \code{rows <= nrow(data)}:
+There is a functional difference between \code{rows = Inf} and \code{rows = nrow(data)}:
 \itemize{
 \item when \code{rows = Inf}, the size of source data is irrelevant. They can be either copied (\code{how = scp})
 or moved (\code{how = mv}) to \code{writepath} destination without being loaded into memory.

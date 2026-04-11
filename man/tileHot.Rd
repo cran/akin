@@ -10,9 +10,9 @@ tileHot(readpath, rows, splits, omc = "dgCMatrix", ...)
 \item{readpath}{character, length 1. Path to source data that is readable with \link[data.table:fread]{data.table::fread}}
 
 \item{rows}{integer length 1. Number of rows in each data subset. Internally, it determines the total
-number of subsets before the subsets are vertically split}
+number of subsets before the vertical split}
 
-\item{splits}{integer, length 1. Number of vertical data splits in each subset. Recommended for
+\item{splits}{integer, length 1. Number of vertical data splits in each subset, see \link{splitV}. Recommended for
 very wide data frames. When \code{splits = 0}, no vertical splitting occurs}
 
 \item{omc}{character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, "dgCMatrix". Other option:

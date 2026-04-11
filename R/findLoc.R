@@ -58,8 +58,8 @@
                        nc = if (isFALSE(named)) NULL else names(chain)
                     chain = if (isTRUE(all(nzchar(chain)))) as.character(chain)
                  subchain = if (isTRUE(nzchar(subchain))) as.character(subchain)
-                 if (isTRUE(nchar(chain) < nchar(subchain))) stop('the chain is too short!', call. = FALSE)
-                 else{
+                 if (isTRUE(nchar(chain) < nchar(subchain))) {stop('the chain is too short!', call. = FALSE)
+                } else {
                  which = substitute(which)
                  which = match.fun(match.arg(as.character(which), choices = c('min', 'max')), descend = FALSE)
                      w = listenv(); v = listenv()

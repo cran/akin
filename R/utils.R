@@ -6,15 +6,6 @@
 
 cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
 
-#' @title Filter Combinations Of Substrings Extracted From Chains
-#' @keywords internal
-#' @noRd
-
-sift = function(x, chain, ...) {
-  y = paste0(x, collapse = '')
-  if (eval(cond)) y
-}
-
 #' @title Object For oneHot Function, decode
 #' @description Logical expression
 #'
@@ -61,9 +52,9 @@ retz = substitute(
 s = function(n, m, med, Mx, M, thresh) {
             if(is.numeric(thresh) && is.double(thresh)) ceiling(thresh) else thresh
             if(thresh < M) {
-               if(thresh <= m) ceiling(sqrt(n)*log(n))
-               else if (m < thresh & thresh <= med) ceiling(sqrt(n)*log(n, base = 4))
-               else ceiling(n*(med/Mx))
+               if(thresh <= m) {ceiling(sqrt(n)*log(n))
+               } else if (m < thresh & thresh <= med) {ceiling(sqrt(n)*log(n, base = 4))
+               } else ceiling(n*(med/Mx))
             } else ceiling(n*(m/Mx))
 }
 
@@ -81,7 +72,7 @@ checkCondition = function(m, med, M, dtt) {
                                  ss = unique(dtt$size)
                              if (any(0L < ss && ss <= m)) {
                               message('\nfound valid formula for ', t, ' rows\n')
-                             break
+                              break
                           } else message('\nSwitching again ...\n')}
                      }
 

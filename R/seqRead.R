@@ -1,15 +1,14 @@
-#' @title Read Subsets Of Data Files From Disk
+#' @title Read Or Write Subsets Of Data Files From Or To Disk
 #'
-#' @description Reads and/or writes disjoint subsets from data files on disk.
-#' This is a two-stage function (see Examples).
+#' @description Reads or writes data files from/to disk in disjoint subsets. This is a two-stage function (see Examples).
 #'
 #'
 #' @param readpath character length 1. Full path to the source file
 #' @param writepath character length 1. Full path to the destination file
 #'
 #' @details
-#' Arguments above apply to Stage 1 only. The arguments for Stage 2 function, which is the result of
-#' Stage 1, are as follows:
+#' Above arguments apply to Stage 1 only. The arguments for Stage 2 function, which is the output of Stage 1,
+#' are the following:
 #'
 #' \code{rows} integer, length 1. Number of rows per subset. When rows = Inf, the data can be either
 #'     copied \emph{as is} or moved to a new location
@@ -18,7 +17,7 @@
 #'     from first to current
 #'
 #' \code{dropcols} character of \code{length < ncol(data)}. Columns to drop. Works only when \code{rows} is
-#'     finite. Replaces argument \code{select} of [data.table::fread]
+#'     finite. Replaces argument \code{select} from [data.table::fread]
 #'
 #' \code{how} symbol. Works only when \code{rows = Inf} and \code{writepath} location is given.
 #'     Options: \code{how = scp}, data file is copied \emph{as is} to \code{writepath} location;
@@ -49,7 +48,7 @@
 #' During writing, if (\code{print = TRUE}) the displayed subsets are just printouts (class "NULL"). When
 #' \code{writepath = NULL}, displayed subsets are objects.
 #'
-#' There is a functional difference between \code{rows = Inf} and \code{rows <= nrow(data)}:
+#' There is a functional difference between \code{rows = Inf} and \code{rows = nrow(data)}:
 #'
 #'   * when \code{rows = Inf}, the size of source data is irrelevant. They can be either copied (\code{how = scp})
 #' or moved (\code{how = mv}) to \code{writepath} destination without being loaded into memory.
@@ -132,8 +131,8 @@
 splitH = function(readpath, writepath = NULL) {
                       rows = 'how' = tot = i = nmes = j = '<<-' = r = NULL
                   on.exit(i <- 0L, add = TRUE)
-                  readpath = if (file.exists(readpath)) {normalizePath(readpath)}
-                             else {stop('no file at source location!', call. = FALSE)}
+                  readpath = if (file.exists(readpath)) {normalizePath(readpath)
+                             } else {stop('no file at source location!', call. = FALSE)}
                       info = match.fun(info, descend = FALSE)
                       dims = info(readpath)
                        tot = dims[[1L]]; nmes = dims[[2L]]
@@ -142,8 +141,8 @@ splitH = function(readpath, writepath = NULL) {
                 function(rows, seq = TRUE, dropcols = NULL, how, print = TRUE, orn = FALSE) {
                       skip = eval(jump)
                         dt = if (skip > tot || is.infinite(rows) && i > 0L) {
-                                stop('data reading was completed once!\n', call. = FALSE) }
-                            else {
+                                stop('data reading was completed once!\n', call. = FALSE)
+                            } else {
                                    if (isTRUE(print)) cat('\n\nsubset', i + 1L, ':\n')
                              fread(file = readpath, skip = skip, nrows = rows, col.names = nmes
                                  )[, j, env = list(j = j)] }
@@ -155,8 +154,8 @@ splitH = function(readpath, writepath = NULL) {
                          if (is.infinite(rows)) {
                                how = substitute(how)
                               flag = if (how == 'scp') '-p' else '-b'
-                         system2(how, c(flag, '-v', readpath, path.expand(writepath)), stdout = TRUE)}
-                         else {
+                         system2(how, c(flag, '-v', readpath, path.expand(writepath)), stdout = TRUE)
+                         } else {
                            if (!seq) {
                               i <<- i - 1L
                     stop('when writing data, \"seq\" argument must be TRUE', call. = FALSE)}

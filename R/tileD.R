@@ -6,7 +6,7 @@
 #' @param writepath character length 1. Full path to the destination file
 #' @param rows integer length 1. Number of rows in each subset. Internally, it determines the total
 #'    number of subsets before the vertical split
-#' @param splits integer, length 1. Number of vertical data splits in each above subset
+#' @param splits integer, length 1. Number of vertical data splits in each above subset. See [splitV]
 #' @param ... extra arguments to [splitH] e.g. \code{dropcols} for columns dropped from source data
 #'
 #' @details Facilitates local operations on small size tiles by partitioning the data horizontally and vertically.
@@ -56,8 +56,8 @@
 tileData = function(readpath, writepath = NULL, rows, splits, ...) {
               on.exit(w <- NULL, add = TRUE)
                 v = listenv()
-         readpath = if (file.exists(readpath)) {normalizePath(readpath)}
-                    else {stop('no file at source location!', call. = FALSE)}
+         readpath = if (file.exists(readpath)) {normalizePath(readpath)
+                    } else {stop('no file at source location!', call. = FALSE)}
              info = match.fun(info, descend = FALSE)
              dims = r_bg(function(info, readpath) {
                                           info(readpath, show.info = FALSE)
@@ -74,6 +74,6 @@ tileData = function(readpath, writepath = NULL, rows, splits, ...) {
                 w = lapply(v, as.list)
            if (!is.null(writepath) && is.character(writepath) && length(writepath) == 1L) {
                      invisible(write.list(w, writepath))
-             message('\nfile saved to', path.expand(writepath), '\n')}
-           else return(w)
+             message('\nfile saved to', path.expand(writepath), '\n')
+           } else return(w)
      }

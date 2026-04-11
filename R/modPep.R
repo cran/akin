@@ -1,7 +1,7 @@
 #' @title Locate And Extract Modifications Or Monoisotopic Masses From A Modified Peptide
 #'
-#' @description Finds and tabulates amino acid sites and extracts respective modifications or monoisotopic masses
-#' from a modified peptide.
+#' @description Finds and tabulates amino acid modification sites and extracts modifications or monoisotopic masses
+#' from modified peptide data representation.
 #'
 #' @param string character, length 1. Modified or unmodified peptide, or NULL
 #' @param wrap character, length 1. The closing (right-hand) side of any of the bracket types ']', ')', '\}' that wrap
@@ -79,8 +79,8 @@
 #'
 
 locateMod = function(string, wrap = "]", inbracket = ')', except = NULL, rmve = NULL) {
-                     string = if (isTRUE(nzchar(string) && !identical(' ', string))) as.character(string)
-                              else warning('empty string!', call. = FALSE, noBreaks. = TRUE)
+                     string = if (isTRUE(nzchar(string) && !identical(' ', string))) {as.character(string)
+                              } else {warning('empty string!', call. = FALSE, noBreaks. = TRUE)}
                        wrap = match.arg(wrap, choices = c("]", ")", "}"))
                    brackets = as.character(c('}','{',']','[',')','('))
                       awrap = brackets[which(brackets %in% wrap) + 1L]

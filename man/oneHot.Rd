@@ -12,13 +12,14 @@ matrix (preferably, the result of encoding) representing a single source data co
 
 \item{type}{symbol. Choices: \strong{encode} - one-hot encoding, \strong{decode} - revert to original}
 
-\item{omc}{character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, "dgCMatrix"}
+\item{omc}{character length 1. \strong{O}utput \strong{m}atrix \strong{c}lass. Default, 'dgCMatrix', other
+option, 'matrix'}
 
 \item{verbose}{logical, default TRUE, display messages}
 }
 \value{
-Encoding returns a matrix of \code{length(x)} rows and \code{length(unique(x))} columns or a warning. Decoding
-returns a (named) vector or an "illicit states" warning. List vectors are returned unlisted. Integer(ish) vectors,
+Encoding returns a matrix of \code{length(x)} rows and \code{length(unique(x))} columns or a warning.
+Decoding returns a (named) vector or a warning. List vectors are returned unlisted. Integer(ish) vectors,
 converted to integer, character vectors - to factor, double or logical vector types remain unchanged.
 }
 \description{
