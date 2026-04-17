@@ -20,14 +20,15 @@ number of subsets before the vertical split}
 }
 \value{
 A \link[listenv]{listenv} of "data.table" class tiles. When \code{writepath} is given, it produces
-a "csv" file containing data tiles.
+a "rds" file containing data tiles.
 }
 \description{
 Splits long and wide data files in lists of disjoint tiles for further processing.
 }
 \details{
 Facilitates local operations on small size tiles by partitioning the data horizontally and vertically.
-The list of tiles can be written to disk when a \code{writepath} destination is given.
+The list of tiles can be written to disk as "rds"" file when a \code{writepath} destination is given. The written
+data can then be read entirely or in subsets (see Example 2).
 
 NOTE: This utility uses background processing. Check "Security Considerations" in \strong{callr} package documentation.
 }
@@ -47,13 +48,13 @@ a = tileData(tmpf, rows = 10, splits = 3)     # 10x2 and 10x1 tiles
 class(a)                                      # listenv, environment
 str(a)                                        # nested list
 
-tmpf1 = tempfile(fileext = '.csv')            # new location
+tmpf1 = tempfile(fileext = '.rds')            # new location
 
 # 2. Write tiled data
 
 tileData(tmpf, tmpf1, rows = 10, splits = 3)
-a = data.table::fread(tmpf1)                  # read from new location
-View(a)                                       # file of list components
+a = readRDS(tmpf1)[[1]]                  # partial read from new location
+print(a)                                     # list component
 
 unlink(tmpf)
 unlink(tmpf1)
@@ -62,6 +63,6 @@ unlink(tmpf1)
 
 }
 \seealso{
-\link{splitH}, \link{splitV}, \link{tileHot}, package \strong{callr} documentation for "Security Considerations"
+\link{splitH}, \link{splitV}, \link{tileHot}, \link[base]{readRDS}
 }
 \keyword{splitting}

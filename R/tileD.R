@@ -10,14 +10,15 @@
 #' @param ... extra arguments to [splitH] e.g. \code{dropcols} for columns dropped from source data
 #'
 #' @details Facilitates local operations on small size tiles by partitioning the data horizontally and vertically.
-#' The list of tiles can be written to disk when a \code{writepath} destination is given.
+#' The list of tiles can be written to disk as "rds"" file when a \code{writepath} destination is given. The written
+#' data can then be read entirely or in subsets (see Example 2).
 #'
 #' NOTE: This utility uses background processing. Check "Security Considerations" in \strong{callr} package documentation.
 #'
 #' @returns A \link[listenv]{listenv} of "data.table" class tiles. When \code{writepath} is given, it produces
-#' a "csv" file containing data tiles.
+#' a "rds" file containing data tiles.
 #'
-#' @seealso [splitH], [splitV], [tileHot], package \strong{callr} documentation for "Security Considerations"
+#' @seealso [splitH], [splitV], [tileHot], \link[base]{readRDS}
 #'
 #' @keywords splitting
 #'
@@ -39,13 +40,13 @@
 #' class(a)                                      # listenv, environment
 #' str(a)                                        # nested list
 #'
-#' tmpf1 = tempfile(fileext = '.csv')            # new location
+#' tmpf1 = tempfile(fileext = '.rds')            # new location
 #'
 #' # 2. Write tiled data
 #'
 #' tileData(tmpf, tmpf1, rows = 10, splits = 3)
-#' a = data.table::fread(tmpf1)                  # read from new location
-#' View(a)                                       # file of list components
+#' a = readRDS(tmpf1)[[1]]                  # partial read from new location
+#' print(a)                                     # list component
 #'
 #' unlink(tmpf)
 #' unlink(tmpf1)
@@ -73,7 +74,7 @@ tileData = function(readpath, writepath = NULL, rows, splits, ...) {
            for (i in 1:subsets) v[[i]] = splitV(r(rows, ...), splits)
                 w = lapply(v, as.list)
            if (!is.null(writepath) && is.character(writepath) && length(writepath) == 1L) {
-                     invisible(write.list(w, writepath))
+                     invisible(saveRDS(w, writepath))
              message('\nfile saved to', path.expand(writepath), '\n')
            } else return(w)
      }

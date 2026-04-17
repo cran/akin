@@ -1,6 +1,6 @@
-b259ac14562328a75a120fa1f514eef1 *DESCRIPTION
-fea3f8d7e842317248df06cfa6aef6eb *NAMESPACE
-dc92c8eddea84e7c0a17f86840936935 *NEWS.md
+078904bc8dcc721aa1ab9e0868668895 *DESCRIPTION
+fc01431e251815427a76687c5b06b9b3 *NAMESPACE
+795053c4ef24252397f5ede9e3bfb257 *NEWS.md
 16dc7cc3691636ff22b56671b1b6541a *R/akin-package.R
 da00e1b104c83efa2d3e7af8a2c39934 *R/common.R
 3319fc1833a2d29627bacad9a8f11aec *R/findLoc.R
@@ -11,10 +11,10 @@ a165dfedf1b5c5939c51719744dc05a7 *R/oneHotEncoder.R
 aacb4e99146f1e75c60405a5ad2cd152 *R/seqRead.R
 8209edc5c053bc0287685e43f614153b *R/splitLONG.R
 d39e07acf1f97eecdb530ee7f9ce7bf4 *R/stratified_sample.R
-bd8d5d3e97d63ea5fa6cbef08f7d3aac *R/tileD.R
+31fed7e6e3ccd810a5e42e384e7f74c3 *R/tileD.R
 5ca627e037b1ea27544b61c7cfb1ae8d *R/tileHot.R
-676fe1bf1ff6286b203a1ed4bf00aaeb *R/utils.R
-30996ac65bcefa45821b3181fa7a5277 *R/zzz.R
+d1f29649be088057fd2d461a60aff8cd *R/utils.R
+d84a5ae84980140272c49f77870cf4bb *R/zzz.R
 c5efc93b6f0c161bb189e5ef8340ee23 *man/akin-package.Rd
 909ffde4cbd89793477a39d660240dfa *man/common.Rd
 f8be789572db220cf54fcf7ac5e090bc *man/findLoc.Rd
@@ -25,7 +25,7 @@ f9429b3ff1265d51c5186806690c226b *man/getEV.Rd
 74492fcf291cd10f016f43db7a5d8d25 *man/splitH.Rd
 c46e64bb0aeb710e12773bf3259b8521 *man/splitV.Rd
 a3a7acd1e4c25d36f2e004e0e385cac1 *man/stratify.Rd
-d4864840ade981122b69c6c6c9d7713c *man/tileData.Rd
+2da011b05b9840302c0e291f6a70f15e *man/tileData.Rd
 797dd73cf9833d3bafb27cac07056f6e *man/tileHot.Rd
 35f23e713527196b601ff15d06103f81 *tests/testthat.R
 0e712cc8b5bb14ea06fb516d24982adc *tests/testthat/test-common.R

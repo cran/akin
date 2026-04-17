@@ -25,3 +25,8 @@ Added function 'common' which identifies common substrings inside a pair of chai
 * Bugfix: Removed delayed assignment which would prevent spanning the entire from-to window in function "common"
 * Clarified some statements in the "Manual"
 
+# akin 0.2.1
+
+* Removed package 'erer' from dependencies used by "tileData" function. The tiles list is now saved as "rds" file
+  which can be conveniently read as list subsets by readRDS.
+

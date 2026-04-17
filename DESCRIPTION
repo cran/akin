@@ -1,7 +1,7 @@
 Package: akin
 Type: Package
 Title: Functional Utilities for Data Processing
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
     person(
       "Dragos", "Bandur",
@@ -18,14 +18,14 @@ Description: Covers several areas of data processing: batch-splitting, reading a
 License: GPL (>= 3)
 Imports: data.table (>= 1.18.2.0), RVerbalExpressions (>= 0.1.0),
         RcppAlgos(>= 2.9.3), methods
-Depends: R (>= 4.1.0), callr, erer, fastmatch, listenv, Matrix, utils
+Depends: R (>= 4.1.0), callr, fastmatch, listenv, Matrix, utils
 Encoding: UTF-8
 RoxygenNote: 7.3.3
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2026-04-11 15:32:40 UTC; Dragos
+Packaged: 2026-04-16 17:36:48 UTC; Dragos
 Author: Dragos Bandur [aut, cre]
 Maintainer: Dragos Bandur <dbandur@sympatico.ca>
 Repository: CRAN
-Date/Publication: 2026-04-11 17:10:07 UTC
+Date/Publication: 2026-04-17 07:30:02 UTC

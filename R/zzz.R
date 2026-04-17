@@ -3,7 +3,6 @@
 #' @import RVerbalExpressions
 #' @import RcppAlgos
 #' @import methods
-#' @importFrom erer write.list
 #' @importFrom utils type.convert getFromNamespace
 #' @importFrom fastmatch fmatch
 #' @importFrom stats median setNames
@@ -15,9 +14,4 @@
     .onLoad = function(libname, pkgname) {
                          Mmatrix = getFromNamespace('Mmatrix', 'Matrix')
                    rsparsematrix = getFromNamespace('rsparsematrix', 'Matrix')
-                   invisible(
-                     suppressPackageStartupMessages(
-                                            requireNamespace("erer", quietly = TRUE)
-                                          )
-                   )
                 }

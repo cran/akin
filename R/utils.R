@@ -36,8 +36,7 @@ cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
 #'
 
 retz = substitute(
-         expr = if(isTRUE(indx)) id else if(isTRUE(ext)) data[id][]
-                else {
+         expr = if(isTRUE(indx)) id else if(isTRUE(ext)) data[id][] else {
                    if (missing(size)) data[id][, let(c('size', 'row', 'strat', 'n'), NULL)][]
                    else data[id][, let(c('row', 'strat', 'n'), NULL)][]
                 })
