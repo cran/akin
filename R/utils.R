@@ -249,3 +249,13 @@ rBind.fill.internal<-function(x,y,fill,out.class)
   .uv = quote(rx() %>% rx_either_of(awrap, wrap))
    .u = quote(rx() %>% rx_any_of(paste0(awrap, abracket, collapse = '')) %>% rx_anything_but(uu) %>% rx_any_of(paste0(inbracket, wrap, collapse = '')) %>% rx_one_or_more())
    .w = quote(rx() %>% rx_either_of(setdiff(ARGS, except)))
+
+
+#' @title Expressions for function \"fcommon\"
+#'
+#' @keywords internal
+#' @noRd
+#'
+
+ findSeqUp = substitute(expr = union(ii[which(shift(ii, -1L) == ii + 1L)], ii[which(shift(ii, 1L) == ii - 1L)]))
+ findSeqDn = substitute(expr = union(jj[which(shift(jj, -1L) == jj + 1L)], jj[which(shift(jj, 1L) == jj - 1L)]))

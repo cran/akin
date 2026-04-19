@@ -29,4 +29,8 @@ Added function 'common' which identifies common substrings inside a pair of chai
 
 * Removed package 'erer' from dependencies used by "tileData" function. The tiles list is now saved as "rds" file
   which can be conveniently read as list subsets by readRDS.
+  
+# akin 0.3.0
+
+* Added the experimental function "fcommon", a fast version of "common".
 

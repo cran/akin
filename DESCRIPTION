@@ -1,7 +1,7 @@
 Package: akin
 Type: Package
 Title: Functional Utilities for Data Processing
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(
     person(
       "Dragos", "Bandur",
@@ -24,8 +24,8 @@ RoxygenNote: 7.3.3
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2026-04-16 17:36:48 UTC; Dragos
+Packaged: 2026-04-19 04:08:05 UTC; Dragos
 Author: Dragos Bandur [aut, cre]
 Maintainer: Dragos Bandur <dbandur@sympatico.ca>
 Repository: CRAN
-Date/Publication: 2026-04-17 07:30:02 UTC
+Date/Publication: 2026-04-19 11:40:02 UTC

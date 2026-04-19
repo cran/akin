@@ -10,7 +10,7 @@
 #' @param ... extra arguments to [splitH] e.g. \code{dropcols} for columns dropped from source data
 #'
 #' @details Facilitates local operations on small size tiles by partitioning the data horizontally and vertically.
-#' The list of tiles can be written to disk as "rds"" file when a \code{writepath} destination is given. The written
+#' The list of tiles can be written to disk as "rds" file when a \code{writepath} destination is given. The written
 #' data can then be read entirely or in subsets (see Example 2).
 #'
 #' NOTE: This utility uses background processing. Check "Security Considerations" in \strong{callr} package documentation.
