@@ -9,9 +9,11 @@
 #' @importFrom callr r_bg
 #' @importFrom Matrix Matrix rowSums rsparsematrix
 #' @importFrom listenv listenv
+#' @importFrom future.apply future_sapply future_lapply
 #'
 
     .onLoad = function(libname, pkgname) {
                          Mmatrix = getFromNamespace('Mmatrix', 'Matrix')
                    rsparsematrix = getFromNamespace('rsparsematrix', 'Matrix')
+                   requireNamespace("future", quietly = TRUE)
                 }

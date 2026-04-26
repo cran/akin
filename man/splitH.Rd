@@ -12,8 +12,8 @@ splitH(readpath, writepath = NULL)
 \item{writepath}{character length 1. Full path to the destination file}
 }
 \value{
-At stage 1, displayed information and a function. At stage 2, a "data.table" class subset of data
-or a printout of said subset when written on disk.
+At stage 1, displayed information and a function (a closure). At stage 2, a "data.table" class subset
+of data or a printout of said subset when written on disk.
 }
 \description{
 Reads or writes data files from/to disk in disjoint subsets. This is a two-stage function (see Examples).

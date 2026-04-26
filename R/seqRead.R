@@ -55,8 +55,8 @@
 #'
 #'   * when \code{rows} has finite value, the size of source data is relevant and data columns can be dropped.
 #'
-#' @returns At stage 1, displayed information and a function. At stage 2, a "data.table" class subset of data
-#' or a printout of said subset when written on disk.
+#' @returns At stage 1, displayed information and a function (a closure). At stage 2, a "data.table" class subset
+#' of data or a printout of said subset when written on disk.
 #'
 #' @references Part of internal code for Stage 1 was inspired by
 #' \href{https://github.com/Rdatatable/data.table/issues/7169}{data.table Issue# 7169}

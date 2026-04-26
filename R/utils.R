@@ -1,10 +1,22 @@
-#' @title Condition For common Function
+#' @title Conditions For Function \"fcommon\"
 #'
 #' @keywords internal
 #' @noRd
 #'
 
-cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
+    cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
+
+#' @title Substring Validation Used In Function \"fcommon\"
+#' @description Checks combinations for appartenance to source chain
+#'
+#' @keywords internal
+#' @noRd
+#'
+
+ sift = function(x, chain, ...) {
+              y = paste0(x, collapse = '')
+              if (eval(cond)) y else NULL
+}
 
 #' @title Object For oneHot Function, decode
 #' @description Logical expression
@@ -18,10 +30,10 @@ cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
          )
 
 
-#'@title The j-side Of \"data.table\" Sample Calculation
+#' @title The j-side Of \"data.table\" Sample Calculation
 #'
-#'@keywords internal
-#'@noRd
+#' @keywords internal
+#' @noRd
 #'
 
  CALLs = as.call(
@@ -29,13 +41,15 @@ cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
                 , env = list(size = quote(size), replace = quote(replace), args = quote(args), dis = quote(dis))))
    )
 
-#'@title Return Value For Sample Calculation
+#' @title Return Value For Sample Calculation
 #'
-#'@description The \"return()\" Code Part Of \code{stratify} Function
-#'@noRd
+#' @description The \"return()\" Code Part Of Function \"stratify\" Function
+#'
+#' @keywords internal
+#' @noRd
 #'
 
-retz = substitute(
+ retz = substitute(
          expr = if(isTRUE(indx)) id else if(isTRUE(ext)) data[id][] else {
                    if (missing(size)) data[id][, let(c('size', 'row', 'strat', 'n'), NULL)][]
                    else data[id][, let(c('row', 'strat', 'n'), NULL)][]
@@ -48,7 +62,7 @@ retz = substitute(
 #'@noRd
 #'
 
-s = function(n, m, med, Mx, M, thresh) {
+ s = function(n, m, med, Mx, M, thresh) {
             if(is.numeric(thresh) && is.double(thresh)) ceiling(thresh) else thresh
             if(thresh < M) {
                if(thresh <= m) {ceiling(sqrt(n)*log(n))
@@ -57,10 +71,10 @@ s = function(n, m, med, Mx, M, thresh) {
             } else ceiling(n*(m/Mx))
 }
 
-#'n@title Check If Calculated Sample Size Acommodates The Thinnest Stratum
+#' @title Checks If Calculated Sample Size Acommodates The Thinnest Stratum
 #'
-#'@keywords internal
-#'@noRd
+#' @keywords internal
+#' @noRd
 #'
 
 checkCondition = function(m, med, M, dtt) {
@@ -75,16 +89,18 @@ checkCondition = function(m, med, M, dtt) {
                           } else message('\nSwitching again ...\n')}
                      }
 
-#'@title Internal Function For \code{splitH}
+#' @title Internal Function For Function \"splitH\"
 #'
-#'@keywords internal
-#'@noRd
+#' @keywords internal
+#' @noRd
 #'
 
  rename = function(nmes) call('lapply', X = setNames(nm = nmes), FUN = as.name)
 
-#'@title Other Objects for splitH
-#'@noRd
+#' @title Other Objects for \"splitH\"
+#'
+#' @keywords internal
+#' @noRd
 #'
 
   srn = substitute(expr = if (is.infinite(rows)) NULL else if (orn && is.finite(rows)) .I + i*rows)
@@ -124,8 +140,8 @@ checkCondition = function(m, med, M, dtt) {
   #'
   #' @returns Prints info and invisibly returns the number of rows, and data file
   #' column names for internal use.
-  #'@keywords internal
   #'
+  #'@keywords internal
   #' @noRd
   #'
 
@@ -143,7 +159,7 @@ checkCondition = function(m, med, M, dtt) {
     return(invisible(list(tot, nmes)))
   }
 
-#'@title Get Unexported "Mmatrix" From Package "Matrix"
+#'@title Get Unexported \"Mmatrix\" From Package \"Matrix\"
 #'
 #'@keywords internal
 #'@noRd
@@ -162,11 +178,9 @@ M = substitute(expr = {
 })
 
 #'
-#'@title Row-bind Sparse Matrices
+#' @title Row-bind Sparse Matrices
 #'
-#'@keywords internal
-#'
-#'@description [base::rbind]s a list of [Matrix::Matrix] or [base::matrix]
+#' @description [base::rbind]s a list of [Matrix::Matrix] or [base::matrix]
 #' objects, filling in missing columns.
 #'
 #' NOTE 1: This code was taken as is from package 'Matrix.utils' v 0.9.8 published
@@ -175,16 +189,18 @@ M = substitute(expr = {
 #'
 #' Extract from function's documentation:
 #'
-#'@param x, ...	objects to combine. If the first argument is a list and ... is
+#' @param x, ...	objects to combine. If the first argument is a list and ... is
 #'   unpopulated, the objects in that list will be combined.
-#'@param fill value with which to fill unmatched columns
-#'@param out.class the class of the output object. Defaults to the class of x.
+#' @param fill value with which to fill unmatched columns
+#' @param out.class the class of the output object. Defaults to the class of x.
 #'   Note that some output classes are not possible due to R coercion
 #'   capabilities, such as converting a character matrix to a Matrix.
-#'@noRd
+#'
+#' @keywords internal
+#' @noRd
 #'
 
-rBind.fill = function (x, ..., fill = NULL, out.class = class(rbind(x, x))[1]) {
+ rBind.fill = function (x, ..., fill = NULL, out.class = class(rbind(x, x))[1]) {
       if (is.list(x) && !is.data.frame(x) && missing(...)) {
       Reduce(function(x, y) rBind.fill.internal(x, y, fill, out.class), x)
                      }
@@ -194,8 +210,7 @@ rBind.fill = function (x, ..., fill = NULL, out.class = class(rbind(x, x))[1]) {
 }
 
 
-rBind.fill.internal<-function(x,y,fill,out.class)
-{
+ rBind.fill.internal<-function(x,y,fill,out.class) {
   out.class<-force(out.class)
   fillMissing<-is.null(fill)
   if(fillMissing)
@@ -251,7 +266,7 @@ rBind.fill.internal<-function(x,y,fill,out.class)
    .w = quote(rx() %>% rx_either_of(setdiff(ARGS, except)))
 
 
-#' @title Expressions for function \"fcommon\"
+#' @title Filter Conditions For function \"fcommon\"
 #'
 #' @keywords internal
 #' @noRd
