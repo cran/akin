@@ -85,7 +85,9 @@ class(r)                                                # function
 a = r(rows = 11, dropcols = c('am', 'vs'))              # iter1 no original row numbers
 b = r(rows = 11, dropcols = c('am', 'vs'), orn = TRUE)  # iter2 w. original row numbers
 c = r(rows = 11, dropcols = c('am', 'vs'))              # iter3 the last subset
+\dontrun{
 d = r(rows = 11, dropcols = c('am', 'vs'))              # iter4 stop! Return to stage 1
+}
 print(list(a, b, c))
 
 # 2. Read data file completely

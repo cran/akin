@@ -1,7 +1,7 @@
 #'@title Find Substring Combinations In Parallel
 #'
 #'@description
-#'Internal function for \"fcommon\" - the parallelised version of function \"core\".
+#'Internal function for "fcommon" - the parallelised version of function "core".
 #'
 #'@param chain character, length 1. A string
 #'@param brows integer, length 1. Number of combinations matrix rows to be sent
@@ -15,7 +15,6 @@
 #'@keywords internal
 #'@noRd
 #'
-
 
 corePar = function(chain, brows = 1e6, tpe = strategy, wo = workers, optMax = maxSize) {
              'strategy' = 'workers' = 'maxSize' = NULL
@@ -32,8 +31,8 @@ corePar = function(chain, brows = 1e6, tpe = strategy, wo = workers, optMax = ma
               for (i in seq(along=w)) {
                   tot = comboCount(b, w[i])
                    rg = seq(1L, tot, by = brows)
-    m[[i]] = future_sapply(rg, \(lower) {
-             end = min(lower + brows - 1L, tot)
+    m[[i]] = future_lapply(rg, \(lower) {
+              end = min(lower + brows - 1L, tot)
          comboGeneral(b
                     , m = w[i]
                     , FUN = sift
@@ -41,9 +40,8 @@ corePar = function(chain, brows = 1e6, tpe = strategy, wo = workers, optMax = ma
                     , upper = end
                     , chain = chain
                     )
-         }, simplify = TRUE, USE.NAMES = FALSE)
-
+                })
    m[[i]] = m[[i]][nchar(m[[i]]) > 1L] |> unique()
-              }
-          unlist(m) |> unique()
+      }
+   unlist(m) |> unique()
 }

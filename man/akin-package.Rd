@@ -24,5 +24,10 @@ in R console. When possible, suppression of messages should be avoided.
 \author{
 \strong{Maintainer}: Dragos Bandur \email{dbandur@sympatico.ca}
 
+Authors:
+\itemize{
+  \item Dragos Bandur \email{dbandur@sympatico.ca}
+}
+
 }
 \keyword{internal}

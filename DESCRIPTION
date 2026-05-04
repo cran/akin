@@ -1,7 +1,7 @@
 Package: akin
 Type: Package
 Title: Functional Utilities for Data Processing
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: c(
     person(
       "Dragos", "Bandur",
@@ -21,12 +21,12 @@ Imports: data.table (>= 1.18.2.0), RVerbalExpressions (>= 0.1.0),
 Depends: R (>= 4.1.0), callr, fastmatch, future.apply, listenv, Matrix,
         utils
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 Suggests: future, testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-04-25 17:48:51 UTC; Dragos
+Packaged: 2026-05-03 18:50:39 UTC; Dragos
 Author: Dragos Bandur [aut, cre]
 Maintainer: Dragos Bandur <dbandur@sympatico.ca>
 Repository: CRAN
-Date/Publication: 2026-04-26 17:40:02 UTC
+Date/Publication: 2026-05-04 04:30:02 UTC

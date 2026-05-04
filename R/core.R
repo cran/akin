@@ -1,7 +1,7 @@
 #'@title Find Substring Combinations
 #'
 #'@description
-#'Internal function for \"fcommon\" - the fast version of function \"common\".
+#'Internal function for "fcommon" - the fast version of "common".
 #'
 #'@param u character, length 1. A string
 #'@param rows integer length 1. Default 100. The number of rows (combinations) in each

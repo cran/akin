@@ -1,12 +1,11 @@
-#' @title Conditions For Function \"fcommon\"
+#' @title Conditions For Function "fcommon"
 #'
 #' @keywords internal
 #' @noRd
 #'
+   cond = substitute(expr = grepl(y, chain, useBytes = TRUE, ...))
 
-    cond = substitute(expr = isTRUE(grep(y, chain, useBytes = TRUE, ...) > 0L))
-
-#' @title Substring Validation Used In Function \"fcommon\"
+#' @title Substring Validation Used In Function "fcommon"
 #' @description Checks combinations for appartenance to source chain
 #'
 #' @keywords internal
@@ -15,7 +14,7 @@
 
  sift = function(x, chain, ...) {
               y = paste0(x, collapse = '')
-              if (eval(cond)) y else NULL
+             if (eval(cond)) y else NULL
 }
 
 #' @title Object For oneHot Function, decode
@@ -30,7 +29,7 @@
          )
 
 
-#' @title The j-side Of \"data.table\" Sample Calculation
+#' @title The j-side Of "data.table" Sample Calculation
 #'
 #' @keywords internal
 #' @noRd
@@ -43,7 +42,7 @@
 
 #' @title Return Value For Sample Calculation
 #'
-#' @description The \"return()\" Code Part Of Function \"stratify\" Function
+#' @description The "return()" Code Part Of Function "stratify" Function
 #'
 #' @keywords internal
 #' @noRd
@@ -89,7 +88,7 @@ checkCondition = function(m, med, M, dtt) {
                           } else message('\nSwitching again ...\n')}
                      }
 
-#' @title Internal Function For Function \"splitH\"
+#' @title Internal Function For Function "splitH"
 #'
 #' @keywords internal
 #' @noRd
@@ -97,7 +96,7 @@ checkCondition = function(m, med, M, dtt) {
 
  rename = function(nmes) call('lapply', X = setNames(nm = nmes), FUN = as.name)
 
-#' @title Other Objects for \"splitH\"
+#' @title Other Objects for "splitH"
 #'
 #' @keywords internal
 #' @noRd
@@ -159,7 +158,7 @@ checkCondition = function(m, med, M, dtt) {
     return(invisible(list(tot, nmes)))
   }
 
-#'@title Get Unexported \"Mmatrix\" From Package \"Matrix\"
+#'@title Get Unexported "Mmatrix" From Package "Matrix"
 #'
 #'@keywords internal
 #'@noRd
@@ -180,8 +179,8 @@ M = substitute(expr = {
 #'
 #' @title Row-bind Sparse Matrices
 #'
-#' @description [base::rbind]s a list of [Matrix::Matrix] or [base::matrix]
-#' objects, filling in missing columns.
+#' @description \code{rbind}s a list of [Matrix::Matrix] or [base::matrix]
+#' objects, filling in the missing columns.
 #'
 #' NOTE 1: This code was taken as is from package 'Matrix.utils' v 0.9.8 published
 #' under GPL-3 license and removed from CRAN. With thanks to the package Author!
@@ -253,7 +252,7 @@ M = substitute(expr = {
   return(result)
 }
 
-#' @title Regular Expressions And Objects For \"locateMod\" function
+#' @title Regular Expressions And Objects For "locateMod" function
 #' @keywords internal
 #' @noRd
 #'
@@ -266,11 +265,14 @@ M = substitute(expr = {
    .w = quote(rx() %>% rx_either_of(setdiff(ARGS, except)))
 
 
-#' @title Filter Conditions For function \"fcommon\"
+#' @title Filter Conditions For function "fcommon"
 #'
 #' @keywords internal
 #' @noRd
 #'
+
+ ii = quote(which(m[,1L] == m[, 2L], arr.ind = TRUE))
+ jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
 
  findSeqUp = substitute(expr = union(ii[which(shift(ii, -1L) == ii + 1L)], ii[which(shift(ii, 1L) == ii - 1L)]))
  findSeqDn = substitute(expr = union(jj[which(shift(jj, -1L) == jj + 1L)], jj[which(shift(jj, 1L) == jj - 1L)]))

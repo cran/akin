@@ -46,7 +46,7 @@ information on stratification becomes available after first run}
 \item{dis}{symbol. Default NULL. One of the density or function \link[stats]{distributions} used for
 generating probability vectors for probabilistic sampling}
 
-\item{args}{list of arguments required by distributions as described in \link[stats:Distributions]{stats::distributions} documentation.
+\item{args}{list of arguments required by distributions as described in \link[stats:distributions]{stats::distributions} documentation.
 Default, none. \strong{NB} The list should \emph{never} include the first argument (\strong{x} or \strong{n})
 required in documentation, as it is collected internally from each stratum
 

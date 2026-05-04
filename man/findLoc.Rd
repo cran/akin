@@ -35,7 +35,7 @@ When TRUE, returns all locations inside the chain for each chain in a list}
 returns the leftmost location inside the chain, e.g. closest to the N-terminus of a protein chain. \code{which = max}
 returns the rightmost location, e.g. closest to the C-terminus of a protein chain. Overwritten when \code{all. = TRUE}}
 
-\item{ignore.case, perl, fixed, useBytes}{arguments to \link[base:grep]{base::gregexpr}}
+\item{ignore.case, perl, fixed, useBytes}{arguments to \link[base:gregexpr]{base::gregexpr}}
 }
 \value{
 A (named) integer or a (named) list of integer vectors of \code{subchain} locations inside the \code{chain}.
@@ -44,7 +44,7 @@ A (named) integer or a (named) list of integer vectors of \code{subchain} locati
 Finds all locations of a known character substring inside a character string.
 }
 \details{
-Wrapper to \link[base:grep]{base::gregexpr}, the function scans all chains in a list of chains to find subchain locations.
+Wrapper to \link[base:gregexpr]{base::gregexpr}, the function scans all chains in a list of chains to find subchain locations.
 The location is defined as the position inside the chain relative to the left end of the chain of the first subchain character.
 }
 \examples{

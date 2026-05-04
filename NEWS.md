@@ -38,12 +38,25 @@ Added function 'common' which identifies common substrings inside a pair of chai
 
 * Expanded function "fcommon" capability to parallel processing for substrings longer than 20 characters.
   A local parallel plan is set when formal argument "strategy" receives a value. Pending on this, formal
-  argment "workers" may also receive a value. Without a parallel plan, the function will output the long
-  substrings as they are, along with a message. The output is no longer a closure but a character vector.
+  argments "workers" and "maxSize" may also receive values. Without a parallel plan, the function returns
+  long substrings as they are with a message. 
+  
+* Function "fcommon" output is no longer a closure but a character vector.
   
 * Function "common" remains available.
  
 * Modified the Manual accordingly.
 
 * Added package "future" to Suggests and package "future.apply" to Depends in DESCRIPTION.
+
+# akin 0.3.2
+
+* Minor changes to "fcommon" code.
+
+* Added function "cover" which calculates the number of combinations for a common substring covering.
+  Returns the "total", "min", "max" as a prettified, named vector and a plot on request.
+
+* Modified the Manual accordingly.
+
+* Function "common" is now deprecated.
 
