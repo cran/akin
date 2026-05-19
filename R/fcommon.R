@@ -3,39 +3,17 @@
 #' @description Checks and identifies substrings that are common to a pair of strings.
 #'
 #' @param x,y character, length 1 each: a string, such as a protein chain. \code{y} can be missing
-#' @param strategy character, length 1 or symbol. Strategy for parallel processing. Choices are "multisession", "multicore" and
-#' "cluster". Default NULL, which corresponds to sequential processing
-#' @param workers integer, length 1. Number of workers in \link[future]{plan}. Default, NULL which, when \code{strategy != NULL}
-#'   selects all available logical CPUs (not always recommended). Requires \code{strategy != NULL}
-#' @param maxSize integer, length 1. Size of object sent to each worker during parallel processing. Default, NULL
-#'   corresponding to 500.0 MiB according to \link[future]{future.globals.maxSize}. Requires \code{strategy != NULL}
-#' @param ... reserved for internal arguments \code{rows}, default value 100, representing maximum number of combinations matrix rows
-#'  sent to the iterator during sequential processing and \code{brows}, default value 1e6 representing maximum number of combinations
-#'  matrix rows sent to each logical CPU during parallel processing. These arguments should always be named
 #'
-#' @details This utility identifies all common substrings in the \code{x}, \code{y} pair of strings by isolating \emph{sequences} of
-#' identical characters in both strings, which then are packed into substrings and validated. This set of common, shorter than original,
-#' strings lowers the combinatorial overhead which, next, searches for elements of the subset family (i.e. the \emph{covering}) of each
-#' common substring. Further filtering validates sub-substrings that are elements of each common substring (\emph{truncations} or otherwise).
-#' Finally, only a fraction of all combinations generate the set of common substrings. All one-character substrings are removed.
+#' @details This utility identifies common substrings in the \code{x}, \code{y} pair of strings by isolating \emph{sequences} of
+#' identical characters in both strings which then, are packed into substrings and validated. All one-character substrings are removed.
+#' When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 2 characters.
 #'
-#' Common substrings up to 20 characters length are processed sequentially and longer common substrings are returned, when found,
-#' with a message. Longer substrings can be processed in parallel by setting values for \code{strategy} and \code{workers} which set
-#' a \emph{local} \link[future]{plan}, triggering the parallel processing mode. Function [cover] helps adjusting the \link[future]{plan}.
-#'
-#' \code{maxSize}. By default, the size of objects sent to each logical CPU during parallel processing is set at 500.0 MiB. Parallel
-#' processing of strings of more than 30 characters length may challenge this limit if the number of workers set in \link[future]{plan}
-#' is small in relation to the length of these substrings. To decrease worker's load, a recommended approach is to increase the number
-#' of \code{workers} or, to lower the number of \code{brows} in the \code{...} list (which may result in a longer processing time).
-#' Otherwise, check \link[future]{future.globals.maxSize} option and set a value for \code{maxSize} as suggested there.
-#'
-#' @returns A sorted character vector of common substrings longer than 2 characters each. When \code{y} is missing from call, a sorted
-#' character vector of valid substrings in \code{x} longer than 2 characters each.
-#'
-#' @seealso [cover], \link[future]{plan}, \link[future]{future.globals.maxSize}, \link[RcppAlgos]{comboIter}, \link[RcppAlgos]{comboGeneral},
-#'          \link[parallel]{detectCores}
+#' @returns A sorted character vector of common substrings of length >= 2 characters each. When \code{y} is missing from call, a sorted
+#' character vector of valid substrings in \code{x} of length >= 2 characters each.
 #'
 #' @keywords Proteomics
+#'
+#' @seealso [cover]
 #'
 #' @export
 #'
@@ -43,46 +21,58 @@
 #'
 #' if (interactive()) {
 #'
-#'  # Check for common substrings in the pair below
+#'  # 1. Check for common substrings in the pair below
 #'
 #'  x = 'dvvmtqsplslpvtpgepasiscrssqslaktyrvvsvltvlhqdwlngkeykckvv'
 #'  y = 'mtqspltyrvvsvltvlhqdwlngkeykcksnkalpapiektisk'
 #'
-#' # 1. Sequential Run
-#'
-#' # 1.1 Brief output
+#' # 1.1 Common substrings
 #'  system.time(a <- fcommon(x, y))
-#'  print(a)                                              # output and message
+#'  print(head(a, 30))
 #'
-#' # 1.2 Long substring discovered above
-#' z = 'tyrvvsvltvlhqdwlngkeykck'
+#' # 1.2 Cleaving (slow on very long strings!)
+#'  system.time(aa <- fcommon(x))
+#'  system.time(bb <- fcommon(y))
 #'
-#' # 1.3 Check the workload in parallel processing
-#' cover(z, TRUE)                                         # covering combinations
-#'                                                        # and plot
-#' # The "max" value suggests that 3 workers suffice
+#' # 1.3 Identical results
+#'  A = sort(intersect(aa, bb))                                # common substrings
+#'  identical(a, A)                                            # TRUE
 #'
-#' # 2. Parallel run
-#'\dontrun{
-#'  system.time(b <- fcommon(x, y, multisession, 3))      # the plan is set
-#'  print(b)                                              # extended output
-#' }
-#' }
+#' # 2. Different methods for valid substrings
+#'
+#' x = 'tyrvvsvltvlhqdwlngkeykck'
+#'
+#' # 2.1. Combinations matrix (slower!)
+#' system.time(am <- cover(x, valid. = TRUE))                  # valid substrings
+#'
+#' # 2.2 String cleaving
+#' system.time(ac <- fcommon(x))                               # valid substrings
+#'
+#' identical(am, ac)                                           # TRUE
+#'
+#'}
 #'
 
-fcommon = function(x, y, strategy = NULL, workers = NULL, maxSize = NULL, ...) {
-                 core = match.fun(core, descend = FALSE)
-                 delayedAssign('early.', 20L)
-                    if (missing(y)) y <- x
+fcommon = function(x, y) {
+                 frec = match.fun(frec, descend = FALSE)
+                 seqv = match.fun(seqv, descend = FALSE)
+              on.exit(rez <- NULL, add = TRUE)
+              if (missing(y)) {
+               if (!nzchar(x)) stop('\nstring should not be empty!\n', call. = FALSE)
+                            rez = do.call(frec, list(x))
+                            rez = sapply(rez, paste0, collapse = '', USE.NAMES = FALSE); outl <- NULL
+                            rez = rez[which(sapply(rez, grepl, x, useBytes = TRUE, simplify = TRUE))]
+                } else {
                     x = as.character(x); y = as.character(y)
+              if (!nzchar(x) || !nzchar(y)) stop('\nno string should be empty!\n', call. = FALSE)
                    fo = list(x, y)
                   m.l = which.min(c(nchar(fo[[1L]]), nchar(fo[[2L]])))
                    xv = strsplit(fo[[m.l]], split = '')[[1L]]
-                   yv = if (missing(y)) xv else strsplit(fo[[-m.l]], split = '')[[1L]]; fo <- NULL
+                   yv = strsplit(fo[[-m.l]], split = '')[[1L]]; fo <- NULL
                    xv = append(xv, rep(NA_character_, abs(length(yv) - length(xv))))
                     z = zz = yv
                     m = cbind(xv, z, zz)
-                   k0 = m[eval(findSeqUp), 1L]; kk0 = m[eval(findSeqDn), 1L]
+                   k0 = m[seqv(eval(ii)), 1L]; kk0 = m[seqv(eval(jj)), 1L]
                    kl = function() {
                                   k = list(); kk = list()
                                   N = max(length(xv), length(yv))
@@ -90,26 +80,22 @@ fcommon = function(x, y, strategy = NULL, workers = NULL, maxSize = NULL, ...) {
                                         z <<- shift(z, -1L)
                                        zz <<- shift(zz, 1L)
                                         m <<- cbind(xv, z, zz)
-                                   k[[i]] = m[eval(findSeqUp), 1L]; kk[[i]] = m[eval(findSeqDn), 1L]
-                                }
+                                     k[[i]] = m[seqv(eval(ii)), 1L]
+                                    kk[[i]] = m[seqv(eval(jj)), 1L]
+                                    }
                                 kl = c(k0, kk0, k, kk) |> unique()
                                 xv = yv = m = k0 = k = kk0 = kk <- NULL
                                 kl[lengths(kl) > 1L]
-                        }
-                              outl = kl()
-                               rez = sapply(outl, paste0, collapse = '', USE.NAMES = FALSE); outl <- NULL
-                               rez = rez[which(sapply(rez, grepl, x, useBytes = TRUE, simplify = TRUE))]
-                               rez = unique(rez)
-                               rez = c(rez
-                                     , lapply(rez
-                                            , \(i) {
-                                                ni = nchar(i)
-                                            if (ni == 2L) i else if (2L < ni && ni <= early.) {
-                                              core(i, ...)} else if (!is.null(strategy) && ni > early.) {
-                                              corePar = match.fun(corePar, descend = FALSE)
-                                              corePar(i, tpe = strategy, wo = workers, optMax = maxSize)}
-                                            })) |> unlist() |> unique()
-            if (isTRUE(max(nchar(rez)) > early.) && is.null(strategy)) message('sequential plan: brief output!')
+                                }
+                            outl = kl()
+                              zu = sapply(outl, paste0, collapse = '', USE.NAMES = FALSE); outl <- NULL
+                              zv = sapply(zu, frec)
+                              zv = unlist(zv) |> unique()
+                             rez = intersect(
+                                      zv[which(sapply(zv, grepl, x, useBytes = TRUE, simplify = TRUE))]
+                                    , zv[which(sapply(zv, grepl, y, useBytes = TRUE, simplify = TRUE))]
+                            )
+                      }
             sort(rez)
       }
 

@@ -60,3 +60,18 @@ Added function 'common' which identifies common substrings inside a pair of chai
 
 * Function "common" is now deprecated.
 
+# akin 0.3.3
+
+* Bugfix: Re-coded the sequence isolation in matrix indices routine which were missing few short substrings.
+
+* Redesigned function "fcommon" which is now fully sequential.
+
+* Expanded function "cover" capability to show a list of valid substrings out of the string covering using
+  combinatorial method (recommended for short strings).
+
+* Removed packages 'future.apply' from Depends and 'future' from Suggests in DESCRIPTION.
+
+* Function "common" is now defunct.
+
+
+

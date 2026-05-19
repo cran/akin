@@ -4,32 +4,36 @@
 \alias{cover}
 \title{Calculate The Number Of Combinations Of String Covering}
 \usage{
-cover(x, wplot = FALSE)
+cover(x, valid. = FALSE, wplot = FALSE)
 }
 \arguments{
 \item{x}{integer, length = 1 or character vector, length > 1, or character string}
 
-\item{wplot}{logical, FALSE. When TRUE, displays a plot of combinations versus number of characters in substring}
+\item{valid.}{logical, default, FALSE. When TRUE, valid substrings are returned. Requires character or string}
+
+\item{wplot}{logical, FALSE. When TRUE, displays a plot of combinations versus number of characters in string}
 }
 \value{
-A prettified named vector showing the total, minimum and maximum number of combinations for respective
-string, along with a plot (\code{wplot = TRUE}).
+When \code{valid. = FALSE} a prettified named vector showing the total, minimum and maximum number of
+combinations for respective string covering. When \code{valid. = TRUE}, a character vector of valid substrings
+longer than 2 characters each. In both cases, a plot is returned when \code{wplot = TRUE}.
 }
 \description{
-Calculates the number of subset family (\emph{covering}) combinations for common substrings
-identified by function \link{fcommon}.
+Calculates the cardinality of substring family (\emph{the covering}) and returns valid elements.
 }
 \details{
-This function helps in deciding the parameters for parallel tasks of function \link{fcommon}. It finds the
-total, the minimum and the maximum of number of combinations processed by \link{fcommon} for individual substring covering.
+This function finds the total, the minimum and the maximum number of combinations of individual string
+covering or returns a subset of valid substrings (i.e. elements of the string) by retaining even transpositions
+inside the combinations matrix.
 
-Since at peak workload each worker receives by default 1e6 combinations for processing (see argument \code{...} in \link{fcommon}
-documentation), the number of workers in a \link[future]{plan} is effectively decided taking the maximum number of
-combinations as reference. The \code{min:max} range relates to workers idling outside the peak: setting a plan with too
-many workers would render many of them idle during \link{fcommon}'s parallel run. On another hand, setting it with too few, may
-challenge the default workload limit (see argument \code{maxSize} in \link{fcommon} documentation).
+NOTE 1: Herein, the \emph{covering} represents the substring family that preserves the order of characters inside
+the string. Hence, the use of combinations instead of partial permutations, \code{n!/(n-r)!}, as the order
+inside each selection group \code{r} is irrelevant.
 
-When \code{x} is an integer, it must equal either the \code{nchar(string)} or the \code{length(character)}.
+NOTE 2: Very long strings may result in memory allocation error when \code{valid. = TRUE}. Use \link{fcommon} instead.
+
+NOTE 3: When \code{x} is an integer associated with an existing string, \code{x} must equal either \code{nchar(string)}
+or \code{length(character)}.
 }
 \examples{
 
@@ -49,11 +53,16 @@ x = strsplit(x, '')[[1]]
 b = cover(x)
 print(b)
 
-# 2 An integer
+# 2. An integer
 
 n = length(x)
-c = cover(n, TRUE)
+c = cover(n)
 print(c)
+
+# 3. Valid substrings with plot
+
+d = cover(x, valid. = TRUE, wplot = TRUE)
+print(head(d, 30))
 
 }
 

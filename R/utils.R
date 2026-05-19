@@ -1,21 +1,53 @@
-#' @title Conditions For Function "fcommon"
+#' @title Conditions For Function "cover"
 #'
 #' @keywords internal
 #' @noRd
 #'
-   cond = substitute(expr = grepl(y, chain, useBytes = TRUE, ...))
+  cmm = substitute(expr = matrix(xv[mn], nrow(mn), ncol(mn)))
+ cond = substitute(expr = 1L + cumsum(sapply((N - 1L):(n + 1L), comboCount, n)))
 
-#' @title Substring Validation Used In Function "fcommon"
-#' @description Checks combinations for appartenance to source chain
+#'@title Substring Truncation For Function 'fcommon'
+#'
+#'@keywords internal
+#'@noRd
+#'
+
+   frec = function(x) {
+              a = NULL
+              n = nchar(x)
+             for (i in 1:n) {
+                for(j in i:n) {
+               a <- c(a, substr(x, i, j))
+                }
+              }
+     unique(a[nchar(a) > 1L])
+   }
+
+
+#' @title Filter Conditions For function "fcommon"
 #'
 #' @keywords internal
 #' @noRd
 #'
 
- sift = function(x, chain, ...) {
-              y = paste0(x, collapse = '')
-             if (eval(cond)) y else NULL
-}
+ii = quote(which(m[,1L] == m[, 2L], arr.ind = TRUE))
+jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
+
+
+#' @title Character Sequence Validation Used In Function "fcommon"
+#' @description Checks indices for internal sequences
+#'
+#' @keywords internal
+#' @noRd
+#'
+
+   seqv = function(x) {
+             'V2' = 'V3' = NULL
+               dt = data.table(x, shift(x, -1L), shift(x, 1L))
+               xi = dt[x == V2 - 1L | x == V3 + 1L]$x
+               xi[!is.na(xi)]
+
+   }
 
 #' @title Object For oneHot Function, decode
 #' @description Logical expression
@@ -263,16 +295,3 @@ M = substitute(expr = {
   .uv = quote(rx() %>% rx_either_of(awrap, wrap))
    .u = quote(rx() %>% rx_any_of(paste0(awrap, abracket, collapse = '')) %>% rx_anything_but(uu) %>% rx_any_of(paste0(inbracket, wrap, collapse = '')) %>% rx_one_or_more())
    .w = quote(rx() %>% rx_either_of(setdiff(ARGS, except)))
-
-
-#' @title Filter Conditions For function "fcommon"
-#'
-#' @keywords internal
-#' @noRd
-#'
-
- ii = quote(which(m[,1L] == m[, 2L], arr.ind = TRUE))
- jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
-
- findSeqUp = substitute(expr = union(ii[which(shift(ii, -1L) == ii + 1L)], ii[which(shift(ii, 1L) == ii - 1L)]))
- findSeqDn = substitute(expr = union(jj[which(shift(jj, -1L) == jj + 1L)], jj[which(shift(jj, 1L) == jj - 1L)]))

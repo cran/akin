@@ -41,7 +41,7 @@ returns the rightmost location, e.g. closest to the C-terminus of a protein chai
 A (named) integer or a (named) list of integer vectors of \code{subchain} locations inside the \code{chain}.
 }
 \description{
-Finds all locations of a known character substring inside a character string.
+Finds all locations of a \emph{known} character substring inside a character string.
 }
 \details{
 Wrapper to \link[base:gregexpr]{base::gregexpr}, the function scans all chains in a list of chains to find subchain locations.

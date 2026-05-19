@@ -1,6 +1,6 @@
 #' @title Find Substring Locations Inside A String
 #'
-#' @description Finds all locations of a known character substring inside a character string.
+#' @description Finds all locations of a \emph{known} character substring inside a character string.
 #'
 #' @param subchain character, length 1, e.g. a peptide sequence
 #' @param chain (named) character, length 1 or a (named) list of such characters such as a

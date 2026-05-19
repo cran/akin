@@ -4,81 +4,60 @@
 \alias{fcommon}
 \title{Fast Identify Common Substrings In A Pair Of Strings}
 \usage{
-fcommon(x, y, strategy = NULL, workers = NULL, maxSize = NULL, ...)
+fcommon(x, y)
 }
 \arguments{
 \item{x, y}{character, length 1 each: a string, such as a protein chain. \code{y} can be missing}
-
-\item{strategy}{character, length 1 or symbol. Strategy for parallel processing. Choices are "multisession", "multicore" and
-"cluster". Default NULL, which corresponds to sequential processing}
-
-\item{workers}{integer, length 1. Number of workers in \link[future]{plan}. Default, NULL which, when \code{strategy != NULL}
-selects all available logical CPUs (not always recommended). Requires \code{strategy != NULL}}
-
-\item{maxSize}{integer, length 1. Size of object sent to each worker during parallel processing. Default, NULL
-corresponding to 500.0 MiB according to \link[future]{future.globals.maxSize}. Requires \code{strategy != NULL}}
-
-\item{...}{reserved for internal arguments \code{rows}, default value 100, representing maximum number of combinations matrix rows
-sent to the iterator during sequential processing and \code{brows}, default value 1e6 representing maximum number of combinations
-matrix rows sent to each logical CPU during parallel processing. These arguments should always be named}
 }
 \value{
-A sorted character vector of common substrings longer than 2 characters each. When \code{y} is missing from call, a sorted
-character vector of valid substrings in \code{x} longer than 2 characters each.
+A sorted character vector of common substrings of length >= 2 characters each. When \code{y} is missing from call, a sorted
+character vector of valid substrings in \code{x} of length >= 2 characters each.
 }
 \description{
 Checks and identifies substrings that are common to a pair of strings.
 }
 \details{
-This utility identifies all common substrings in the \code{x}, \code{y} pair of strings by isolating \emph{sequences} of
-identical characters in both strings, which then are packed into substrings and validated. This set of common, shorter than original,
-strings lowers the combinatorial overhead which, next, searches for elements of the subset family (i.e. the \emph{covering}) of each
-common substring. Further filtering validates sub-substrings that are elements of each common substring (\emph{truncations} or otherwise).
-Finally, only a fraction of all combinations generate the set of common substrings. All one-character substrings are removed.
-
-Common substrings up to 20 characters length are processed sequentially and longer common substrings are returned, when found,
-with a message. Longer substrings can be processed in parallel by setting values for \code{strategy} and \code{workers} which set
-a \emph{local} \link[future]{plan}, triggering the parallel processing mode. Function \link{cover} helps adjusting the \link[future]{plan}.
-
-\code{maxSize}. By default, the size of objects sent to each logical CPU during parallel processing is set at 500.0 MiB. Parallel
-processing of strings of more than 30 characters length may challenge this limit if the number of workers set in \link[future]{plan}
-is small in relation to the length of these substrings. To decrease worker's load, a recommended approach is to increase the number
-of \code{workers} or, to lower the number of \code{brows} in the \code{...} list (which may result in a longer processing time).
-Otherwise, check \link[future]{future.globals.maxSize} option and set a value for \code{maxSize} as suggested there.
+This utility identifies common substrings in the \code{x}, \code{y} pair of strings by isolating \emph{sequences} of
+identical characters in both strings which then, are packed into substrings and validated. All one-character substrings are removed.
+When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 2 characters.
 }
 \examples{
 
 if (interactive()) {
 
- # Check for common substrings in the pair below
+ # 1. Check for common substrings in the pair below
 
  x = 'dvvmtqsplslpvtpgepasiscrssqslaktyrvvsvltvlhqdwlngkeykckvv'
  y = 'mtqspltyrvvsvltvlhqdwlngkeykcksnkalpapiektisk'
 
-# 1. Sequential Run
-
-# 1.1 Brief output
+# 1.1 Common substrings
  system.time(a <- fcommon(x, y))
- print(a)                                              # output and message
+ print(head(a, 30))
 
-# 1.2 Long substring discovered above
-z = 'tyrvvsvltvlhqdwlngkeykck'
+# 1.2 Cleaving (slow on very long strings!)
+ system.time(aa <- fcommon(x))
+ system.time(bb <- fcommon(y))
 
-# 1.3 Check the workload in parallel processing
-cover(z, TRUE)                                         # covering combinations
-                                                       # and plot
-# The "max" value suggests that 3 workers suffice
+# 1.3 Identical results
+ A = sort(intersect(aa, bb))                                # common substrings
+ identical(a, A)                                            # TRUE
 
-# 2. Parallel run
-\dontrun{
- system.time(b <- fcommon(x, y, multisession, 3))      # the plan is set
- print(b)                                              # extended output
-}
+# 2. Different methods for valid substrings
+
+x = 'tyrvvsvltvlhqdwlngkeykck'
+
+# 2.1. Combinations matrix (slower!)
+system.time(am <- cover(x, valid. = TRUE))                  # valid substrings
+
+# 2.2 String cleaving
+system.time(ac <- fcommon(x))                               # valid substrings
+
+identical(am, ac)                                           # TRUE
+
 }
 
 }
 \seealso{
-\link{cover}, \link[future]{plan}, \link[future]{future.globals.maxSize}, \link[RcppAlgos]{comboIter}, \link[RcppAlgos]{comboGeneral},
-\link[parallel]{detectCores}
+\link{cover}
 }
 \keyword{Proteomics}
