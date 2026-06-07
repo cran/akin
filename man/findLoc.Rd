@@ -18,10 +18,10 @@ findLoc(
 )
 }
 \arguments{
-\item{subchain}{character, length 1, e.g. a peptide sequence}
+\item{subchain}{character, length 1, e.g. a peptide sequence. White space is removed}
 
 \item{chain}{(named) character, length 1 or a (named) list of such characters such as a
-list of protein chains obtained from a \emph{fasta} file}
+list of protein chains obtained from a \emph{fasta} file. White space is removed}
 
 \item{outlist}{logical. Default, FALSE, the output is a (named) integer vector of locations. Otherwise,
 it is a (named) list of location vectors, each corresponding to a chain in a list of chains}

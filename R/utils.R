@@ -3,8 +3,9 @@
 #' @keywords internal
 #' @noRd
 #'
-  cmm = substitute(expr = matrix(xv[mn], nrow(mn), ncol(mn)))
- cond = substitute(expr = 1L + cumsum(sapply((N - 1L):(n + 1L), comboCount, n)))
+
+  cmm = quote(matrix(xv[mn], nrow(mn), ncol(mn)))
+ cond = quote(1L + cumsum(sapply((N - 1L):(n + 1L), RcppAlgos::comboCount, n)))
 
 #'@title Substring Truncation For Function 'fcommon'
 #'
@@ -16,10 +17,11 @@
               a = NULL
               n = nchar(x)
              for (i in 1:n) {
-                for(j in i:n) {
-               a <- c(a, substr(x, i, j))
+               for(j in i:n) {
+                   a <- c(a, substr(x, i, j))
+               if (j == i) next
                 }
-              }
+            }
      unique(a[nchar(a) > 1L])
    }
 
@@ -33,9 +35,24 @@
 ii = quote(which(m[,1L] == m[, 2L], arr.ind = TRUE))
 jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
 
+#' @title Sliding Object For function "fcommon"
+#'
+#' @keywords internal
+#' @noRd
+#'
+
+shifty = substitute(
+            expr = for (i in 1:N) {
+                         z <<- shift(z, -1L)
+                        zz <<- shift(zz, 1L)
+                         m <<- cbind(xv, z, zz)
+                      k[[i]] = m[seqv(ii), 1L]
+                     kk[[i]] = m[seqv(jj), 1L]
+                  }
+            )
 
 #' @title Character Sequence Validation Used In Function "fcommon"
-#' @description Checks indices for internal sequences
+#' @description Checks indices for internal sequences (contiguous values)
 #'
 #' @keywords internal
 #' @noRd
@@ -45,7 +62,7 @@ jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
              'V2' = 'V3' = NULL
                dt = data.table(x, shift(x, -1L), shift(x, 1L))
                xi = dt[x == V2 - 1L | x == V3 + 1L]$x
-               xi[!is.na(xi)]
+              xi[!is.na(xi)]
 
    }
 

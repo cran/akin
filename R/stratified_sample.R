@@ -62,13 +62,13 @@
 #'
 #' \code{dis}. The \code{prob} argument in [base::sample] cannot be used as required since the length of probability vector
 #' varies with stratum thickness. Herein, stratum probability vectors are determined by the distribution specified in
-#' argument \code{dis} which associates each stratum with a probability vector of thickness length. When \code{args} is
+#' argument \code{dis} which associates each stratum with a probability vector of thickness (\strong{n}) length. When \code{args} is
 #' missing from call, \code{dis} uses the default argument values for respective distribution. An error is thrown when the
 #' probability vector has insufficient number of non-zero values. See package \strong{stats}, "Distributions" documentation.
 #'
-#' NOTE: The random variate generators i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of absolute
-#' \emph{random deviate} values which play the role of pseudo-probabilities conformant with the requirements listed in
-#' [base::sample] documentation.
+#' NOTE: The \emph{random variate generators} i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of
+#' absolute \emph{random deviate} values which play the role of pseudo-probabilities (i.e. not necessarily elements of
+#' (\strong{n-1})-simplex) conformant with requirements listed in [base::sample] documentation.
 #'
 #'@returns A proportional or non-proportional stratified sample (depending on whether \code{size} is absent or present
 #' in call), either as row index or as sampled data, compounded from random or probability samples taken from each
@@ -100,7 +100,7 @@
 #'             , 'cyl'
 #'             , c('vs', 'am')
 #'             , seed = 314
-#'             , indx = FALSE
+#'             , indx = FALSE                                    # sampled data
 #'             , ext = TRUE)                                     # extra columns
 #' print(smp)
 #' identical(rowID, smp$row)                                     # TRUE
@@ -146,7 +146,7 @@
 stratify = function(X, target, stratum = NULL, size, thresh, seed = NULL, indx = TRUE
                   , dis = NULL, args = list(), ext = FALSE, replace = FALSE, verbose = TRUE) {
                    n = strat = Mx = j = NULL
-                   stopifnot('\n \"target\" should not be part of \"stratum\"!\n'= isTRUE(!target %in% stratum))
+                   stopifnot('\n"target" should not be element of "stratum"!\n'= isTRUE(!target %in% stratum))
               if (!is.data.table(X)) data = as.data.table(X, keep.rownames = TRUE) else data = X; X <- NULL
                  strata = if (is.null(stratum)) quote(target) else quote(c(target, stratum))
                       s = match.fun(s, descend = FALSE)

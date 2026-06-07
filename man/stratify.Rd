@@ -100,13 +100,13 @@ output. All other \code{thresh} values compromise slightly between output size a
 
 \code{dis}. The \code{prob} argument in \link[base:sample]{base::sample} cannot be used as required since the length of probability vector
 varies with stratum thickness. Herein, stratum probability vectors are determined by the distribution specified in
-argument \code{dis} which associates each stratum with a probability vector of thickness length. When \code{args} is
+argument \code{dis} which associates each stratum with a probability vector of thickness (\strong{n}) length. When \code{args} is
 missing from call, \code{dis} uses the default argument values for respective distribution. An error is thrown when the
 probability vector has insufficient number of non-zero values. See package \strong{stats}, "Distributions" documentation.
 
-NOTE: The random variate generators i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of absolute
-\emph{random deviate} values which play the role of pseudo-probabilities conformant with the requirements listed in
-\link[base:sample]{base::sample} documentation.
+NOTE: The \emph{random variate generators} i.e. the \strong{r*} version of \link[stats]{distributions}, generate vectors of
+absolute \emph{random deviate} values which play the role of pseudo-probabilities (i.e. not necessarily elements of
+(\strong{n-1})-simplex) conformant with requirements listed in \link[base:sample]{base::sample} documentation.
 }
 }
 \examples{
@@ -128,7 +128,7 @@ smp = stratify(mtcars
             , 'cyl'
             , c('vs', 'am')
             , seed = 314
-            , indx = FALSE
+            , indx = FALSE                                    # sampled data
             , ext = TRUE)                                     # extra columns
 print(smp)
 identical(rowID, smp$row)                                     # TRUE

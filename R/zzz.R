@@ -2,7 +2,6 @@
 #' @import data.table
 #' @import RVerbalExpressions
 #' @import methods
-#' @importFrom RcppAlgos comboGeneral comboCount
 #' @importFrom utils type.convert getFromNamespace
 #' @importFrom fastmatch fmatch
 #' @importFrom stats median setNames

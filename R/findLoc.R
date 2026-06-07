@@ -2,9 +2,9 @@
 #'
 #' @description Finds all locations of a \emph{known} character substring inside a character string.
 #'
-#' @param subchain character, length 1, e.g. a peptide sequence
+#' @param subchain character, length 1, e.g. a peptide sequence. White space is removed
 #' @param chain (named) character, length 1 or a (named) list of such characters such as a
-#'   list of protein chains obtained from a \emph{fasta} file
+#'   list of protein chains obtained from a \emph{fasta} file. White space is removed
 #' @param outlist logical. Default, FALSE, the output is a (named) integer vector of locations. Otherwise,
 #'   it is a (named) list of location vectors, each corresponding to a chain in a list of chains
 #' @param named logical. Default, FALSE. Output is not named. Otherwise, the output is named
@@ -55,20 +55,22 @@
 
  findLoc = function(subchain, chain, outlist = FALSE, named = FALSE, all. = FALSE
                   , which = min, ignore.case = TRUE, perl = FALSE, fixed = FALSE, useBytes = FALSE) {
-                       nc = if (isFALSE(named)) NULL else names(chain)
-                    chain = if (isTRUE(all(nzchar(chain)))) as.character(chain)
-                 subchain = if (isTRUE(nzchar(subchain))) as.character(subchain)
+                       nc = if (named) names(chain)
+                    chain = if (isTRUE(all(nzchar(chain)))) as.character(chain) else stop('empty chain!', call. = FALSE)
+                 subchain = if (nzchar(subchain)) as.character(subchain) else stop('empty subchain!', call. = FALSE)
+                    chain = lapply(chain, \(i) `<-`(i, if (any(grepl(' ', i))) gsub(' ', '', i) else i))
+                 subchain = if (grepl(' ', subchain)) gsub(' ', '', subchain) else subchain
                  if (isTRUE(nchar(chain) < nchar(subchain))) {stop('the chain is too short!', call. = FALSE)
                 } else {
-                 which = substitute(which)
-                 which = match.fun(match.arg(as.character(which), choices = c('min', 'max')), descend = FALSE)
-                     w = listenv(); v = listenv()
-                     v = gregexpr(subchain, chain, ignore.case, perl, fixed, useBytes)
-              names(v) = nc
-                     w = lapply(v, \(i) `[`(i, i > 0L)); v <- NULL
+                    which = substitute(which)
+                    which = match.fun(match.arg(as.character(which), choices = c('min', 'max')), descend = FALSE)
+                        w = listenv(); v = listenv()
+                        v = gregexpr(subchain, chain, ignore.case, perl, fixed, useBytes)
+                 names(v) = nc
+                        w = lapply(v, \(i) `[`(i, i > 0L)); v <- NULL
                      w[lengths(w) == 0L] <- NULL
-                 if(isFALSE(all.)) {
-                   if(isFALSE(outlist)) vapply(w, \(i) which(i), integer(1L)) else lapply(w, \(i) which(i))
+                 if(!all.) {
+                   if(!outlist) vapply(w, \(i) which(i), integer(1L)) else lapply(w, \(i) which(i))
                  } else {
-                    if(isFALSE(outlist)) unlist(w, TRUE, TRUE) else w}}
+                    if(!outlist) unlist(w, TRUE, TRUE) else w}}
         }

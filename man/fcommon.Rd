@@ -2,24 +2,25 @@
 % Please edit documentation in R/fcommon.R
 \name{fcommon}
 \alias{fcommon}
-\title{Fast Identify Common Substrings In A Pair Of Strings}
+\title{Identify Common Substrings In A Pair Of Strings}
 \usage{
 fcommon(x, y)
 }
 \arguments{
-\item{x, y}{character, length 1 each: a string, such as a protein chain. \code{y} can be missing}
+\item{x, y}{character, length 1 each: a string, such as a protein chain. \code{y} can be missing. White space is removed}
 }
 \value{
-A sorted character vector of common substrings of length >= 2 characters each. When \code{y} is missing from call, a sorted
-character vector of valid substrings in \code{x} of length >= 2 characters each.
+A sorted character vector of common substrings of min. 2 characters each. When \code{y} is missing from call, a sorted
+character vector of valid substrings in \code{x} of min. 2 characters each.
 }
 \description{
 Checks and identifies substrings that are common to a pair of strings.
 }
 \details{
-This utility identifies common substrings in the \code{x}, \code{y} pair of strings by isolating \emph{sequences} of
-identical characters in both strings which then, are packed into substrings and validated. All one-character substrings are removed.
-When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 2 characters.
+This utility identifies common substrings in the \code{x, y} pair of strings by isolating \emph{sequences} of
+identical characters in both strings which then, are packed into substrings and validated. All one-character substrings
+are removed. When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 1 character.
+Example 1.3 shows that \emph{all} existing common substrings - of min. 2 characters each - are identified.
 }
 \examples{
 
@@ -38,7 +39,7 @@ if (interactive()) {
  system.time(aa <- fcommon(x))
  system.time(bb <- fcommon(y))
 
-# 1.3 Identical results
+# 1.3 Complete identification of common substrings
  A = sort(intersect(aa, bb))                                # common substrings
  identical(a, A)                                            # TRUE
 
@@ -46,7 +47,7 @@ if (interactive()) {
 
 x = 'tyrvvsvltvlhqdwlngkeykck'
 
-# 2.1. Combinations matrix (slower!)
+# 2.1. Combinations matrix (limited by character length)
 system.time(am <- cover(x, valid. = TRUE))                  # valid substrings
 
 # 2.2 String cleaving

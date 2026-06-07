@@ -7,16 +7,16 @@
 cover(x, valid. = FALSE, wplot = FALSE)
 }
 \arguments{
-\item{x}{integer, length = 1 or character vector, length > 1, or character string}
+\item{x}{integer, length = 1 or character vector, length > 1, or character string. White space is removed}
 
-\item{valid.}{logical, default, FALSE. When TRUE, valid substrings are returned. Requires character or string}
+\item{valid.}{logical, default, FALSE. When TRUE, valid substrings are returned. Requires x as character or string}
 
-\item{wplot}{logical, FALSE. When TRUE, displays a plot of combinations versus number of characters in string}
+\item{wplot}{logical, FALSE. When TRUE, displays a plot of combinations versus number of characters in string covering}
 }
 \value{
 When \code{valid. = FALSE} a prettified named vector showing the total, minimum and maximum number of
 combinations for respective string covering. When \code{valid. = TRUE}, a character vector of valid substrings
-longer than 2 characters each. In both cases, a plot is returned when \code{wplot = TRUE}.
+having min. 2 characters each. In both cases, a plot is returned when \code{wplot = TRUE}.
 }
 \description{
 Calculates the cardinality of substring family (\emph{the covering}) and returns valid elements.
@@ -24,51 +24,51 @@ Calculates the cardinality of substring family (\emph{the covering}) and returns
 \details{
 This function finds the total, the minimum and the maximum number of combinations of individual string
 covering or returns a subset of valid substrings (i.e. elements of the string) by retaining even transpositions
-inside the combinations matrix.
+with \emph{sequential} values inside the combinations matrix. Very long strings may result in memory allocation
+error when \code{valid. = TRUE}. Use \link{fcommon} instead.
 
-NOTE 1: Herein, the \emph{covering} represents the substring family that preserves the order of characters inside
-the string. Hence, the use of combinations instead of partial permutations, \code{n!/(n-r)!}, as the order
-inside each selection group \code{r} is irrelevant.
-
-NOTE 2: Very long strings may result in memory allocation error when \code{valid. = TRUE}. Use \link{fcommon} instead.
-
-NOTE 3: When \code{x} is an integer associated with an existing string, \code{x} must equal either \code{nchar(string)}
-or \code{length(character)}.
+NOTE: Herein, the \emph{covering} represents the substring family - of min. 2 characters each - that preserves the
+order of characters inside the string. Hence, the use of combinations instead of partial permutations. Valid
+substrings form a (lower cardinality) subset having elements in sequence (see Example 3).
 }
 \examples{
 
 if (interactive()) {
 
-# 1. x is a character
-
 # 1.1 A string
-x = 'tyrvvsvltvlhqdwlngkeykck'
-
-a = cover(x)
-print(a)
+ x = 'tyrvvsvltvlhqdwlngkeykck'
 
 # 1.2 A vector
-x = strsplit(x, '')[[1]]
+ y = strsplit(x, '')[[1]]
 
-b = cover(x)
-print(b)
+# 1.3 An integer
+ n = length(y)
 
-# 2. An integer
+ll = list(str = x, char = y, int = n)
+print(t(
+       sapply(ll, cover)
+                        ))
 
-n = length(x)
-c = cover(n)
-print(c)
+# 2. Valid substrings with plot
 
-# 3. Valid substrings with plot
+d = cover(x, TRUE, TRUE)
+print(head(d, 30))                         # first 30 substrings
 
-d = cover(x, valid. = TRUE, wplot = TRUE)
-print(head(d, 30))
+# 3. Valid set versus covering
+
+# The plot shows 3 combinations of 2-character groups while e
+# contains 2 sequences of 2 characters each, substring "ac"
+# not being a sequence.
+
+x = letters[1:3]
+e = cover(x, TRUE, TRUE)
+print(e)                                   # valid combinations
 
 }
 
 
 }
 \seealso{
-\link{fcommon}
+\link{fcommon}, \link[RcppAlgos]{comboCount}, \link[RcppAlgos]{comboGeneral}
 }
 \keyword{Proteomics}
