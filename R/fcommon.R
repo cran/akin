@@ -2,12 +2,12 @@
 #'
 #' @description Checks and identifies substrings that are common to a pair of strings.
 #'
-#' @param x,y character, length 1 each: a string, such as a protein chain. \code{y} can be missing. White space is removed
+#' @param x,y character, length 1 each: a string, such as a protein chain. \code{y} may be missing. White space is removed
 #'
 #' @details This utility identifies common substrings in the \code{x, y} pair of strings by isolating \emph{sequences} of
 #' identical characters in both strings which then, are packed into substrings and validated. All one-character substrings
 #' are removed. When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 1 character.
-#' Example 1.3 shows that \emph{all} existing common substrings - of min. 2 characters each - are identified.
+#' Example 1.3 shows that \emph{all existing} common substrings - of min. 2 characters each - are identified.
 #'
 #' @returns A sorted character vector of common substrings of min. 2 characters each. When \code{y} is missing from call, a sorted
 #' character vector of valid substrings in \code{x} of min. 2 characters each.
@@ -39,11 +39,11 @@
 #'  A = sort(intersect(aa, bb))                                # common substrings
 #'  identical(a, A)                                            # TRUE
 #'
-#' # 2. Different methods for valid substrings
+#' # 2. Different methods for finding valid substrings
 #'
 #' x = 'tyrvvsvltvlhqdwlngkeykck'
 #'
-#' # 2.1. Combinations matrix (limited by character length)
+#' # 2.1. Combinations matrix (may be limited by character length)
 #' system.time(am <- cover(x, valid. = TRUE))                  # valid substrings
 #'
 #' # 2.2 String cleaving
@@ -76,19 +76,13 @@ fcommon = function(x, y) {
                     z = zz = yv
                     m = cbind(xv, z, zz)
                    k0 = list(m[seqv(eval(ii)), 1L]); kk0 = list(m[seqv(eval(jj)), 1L])
-                   kl = function() {
-                                  k = list(); kk = list()
-                                  eval(shifty)
-                                 kl = unique(c(k0, kk0, k, kk))
-                                kl[lengths(kl) > 1L]
-                              }
-                            outl = kl()
-                              zu = if (length(outl)) {vapply(outl, paste0, character(1L), collapse = '', USE.NAMES = FALSE)}
-                                    else stop('only max. 1-character substrings found!', call. = FALSE)
-                              xv = yv = fo = m = k0 = k = kk0 = kk = outl <- NULL
-                              zv = sapply(zu, frec, USE.NAMES = FALSE)
-                              zv = unique(unlist(zv))
-                             rez = intersect(
+                 outl = eval(kl)()
+                   zu = if (length(outl)) {vapply(outl, paste0, character(1L), collapse = '', USE.NAMES = FALSE)}
+                        else stop('only max. 1-character substrings found!', call. = FALSE)
+                   xv = yv = fo = m = k0 = k = kk0 = kk = outl <- NULL
+                   zv = sapply(zu, frec, USE.NAMES = FALSE)
+                   zv = unique(unlist(zv))
+                  rez = intersect(
                                     zv[vapply(zv, grepl, logical(1L), x, useBytes = TRUE)]
                                   , zv[vapply(zv, grepl, logical(1L), y, useBytes = TRUE)]
                               )}

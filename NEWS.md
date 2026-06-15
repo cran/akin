@@ -96,3 +96,11 @@ Added function 'common' which identifies common substrings inside a pair of chai
 * Resubmission
 
 * Moved package 'RcppAlgos' from Depends to Imports
+
+# akin 0.3.7
+
+* Triggered by the closing of 'RcppAlgos' issue# 64 on Github. Removed the implemented workaround
+  for passing linux-arm64 CRAN tests on version 0.3.6. 
+  
+* Moved package 'RcppAlgos' from Imports to Depends and updated NAMESPACE by including 'RcppAlgos'.
+

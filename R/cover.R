@@ -52,7 +52,7 @@
 #'
 #' # The plot shows 3 combinations of 2-character groups while e
 #' # contains 2 sequences of 2 characters each, substring "ac"
-#' # not being a sequence.
+#' # not being a sequence in x.
 #'
 #' x = letters[1:3]
 #' e = cover(x, TRUE, TRUE)
@@ -70,7 +70,7 @@ cover = function(x, valid. = FALSE, wplot = FALSE) {
          } else if (is.numeric(x)) as.integer(x)
          if (N <= 2L) stop('string is too short!', call. = FALSE) else xa = 2:(N-1)
          if(wplot && N > 2L) on.exit(eval(plotish), add = TRUE)
-         xx = sapply(xa, \(i) as.double(RcppAlgos::comboCount(N, i)))
+         xx = sapply(xa, \(i) as.double(comboCount(N, i)))
          if (!valid.) {
           b = structure(c(sum(xx), min(xx), max(xx)), names = c('total', 'min', 'max'))
          return(format(b, scientific = TRUE, justify = 'none', digits = 3L))
@@ -78,7 +78,7 @@ cover = function(x, valid. = FALSE, wplot = FALSE) {
          if (is.numeric(x)) stop("no validation for numeric!", call. = FALSE)
          xv = if (length(x) == 1L && nchar(x) > 2L) {strsplit(x, '')[[1L]]
               } else if (length(x) > 2L) x
-          a = lapply(xa, \(i) RcppAlgos::comboGeneral(N, i))
+          a = lapply(xa, \(i) comboGeneral(N, i))
           v = if(length(x) > 2L) paste0(x, collapse = '') else x
          mn = listenv()
          for (n in seq(along=xa)) {

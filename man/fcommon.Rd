@@ -7,7 +7,7 @@
 fcommon(x, y)
 }
 \arguments{
-\item{x, y}{character, length 1 each: a string, such as a protein chain. \code{y} can be missing. White space is removed}
+\item{x, y}{character, length 1 each: a string, such as a protein chain. \code{y} may be missing. White space is removed}
 }
 \value{
 A sorted character vector of common substrings of min. 2 characters each. When \code{y} is missing from call, a sorted
@@ -20,7 +20,7 @@ Checks and identifies substrings that are common to a pair of strings.
 This utility identifies common substrings in the \code{x, y} pair of strings by isolating \emph{sequences} of
 identical characters in both strings which then, are packed into substrings and validated. All one-character substrings
 are removed. When \code{y} is missing, \code{x} is cleaved at each letter producing all substrings longer than 1 character.
-Example 1.3 shows that \emph{all} existing common substrings - of min. 2 characters each - are identified.
+Example 1.3 shows that \emph{all existing} common substrings - of min. 2 characters each - are identified.
 }
 \examples{
 
@@ -43,11 +43,11 @@ if (interactive()) {
  A = sort(intersect(aa, bb))                                # common substrings
  identical(a, A)                                            # TRUE
 
-# 2. Different methods for valid substrings
+# 2. Different methods for finding valid substrings
 
 x = 'tyrvvsvltvlhqdwlngkeykck'
 
-# 2.1. Combinations matrix (limited by character length)
+# 2.1. Combinations matrix (may be limited by character length)
 system.time(am <- cover(x, valid. = TRUE))                  # valid substrings
 
 # 2.2 String cleaving

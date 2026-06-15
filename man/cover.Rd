@@ -58,7 +58,7 @@ print(head(d, 30))                         # first 30 substrings
 
 # The plot shows 3 combinations of 2-character groups while e
 # contains 2 sequences of 2 characters each, substring "ac"
-# not being a sequence.
+# not being a sequence in x.
 
 x = letters[1:3]
 e = cover(x, TRUE, TRUE)

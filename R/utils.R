@@ -5,7 +5,7 @@
 #'
 
   cmm = quote(matrix(xv[mn], nrow(mn), ncol(mn)))
- cond = quote(1L + cumsum(sapply((N - 1L):(n + 1L), RcppAlgos::comboCount, n)))
+ cond = quote(1L + cumsum(sapply((N - 1L):(n + 1L), comboCount, n)))
 
 #'@title Substring Truncation For Function 'fcommon'
 #'
@@ -35,7 +35,7 @@
 ii = quote(which(m[,1L] == m[, 2L], arr.ind = TRUE))
 jj = quote(which(m[,1L] == m[, 3L], arr.ind = TRUE))
 
-#' @title Sliding Object For function "fcommon"
+#' @title Sliding Object For Function "fcommon"
 #'
 #' @keywords internal
 #' @noRd
@@ -50,6 +50,20 @@ shifty = substitute(
                      kk[[i]] = m[seqv(jj), 1L]
                   }
             )
+
+#' @title Internal Function For Function "fcommon"
+#'
+#' @keywords internal
+#' @noRd
+#'
+
+kl = quote(function() {
+             k = list(); kk = list()
+             eval(shifty)
+            kl = unique(c(k0, kk0, k, kk))
+  kl[lengths(kl) > 1L]
+})
+
 
 #' @title Character Sequence Validation Used In Function "fcommon"
 #' @description Checks indices for internal sequences (contiguous values)
